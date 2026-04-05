@@ -1,0 +1,2226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mishi Khan — Premium Makeup Store</title>
+<link id="googleFontLink" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  /* ── Brand palette ── */
+  --rose:#E8325A;--rose-light:#FCE4EC;--rose-dark:#C2185B;
+  --gold:#C9965A;--nude:#FFF5F7;--cream:#FFFFFF;
+  --bg:#FAFAFA;
+  --text:#222222;--text2:#666666;--text3:#999999;
+  --white:#FFFFFF;--border:#F0D6DE;--border2:#E8E8E8;
+  /* ── Admin stays dark ── */
+  --admin-bg:#1A0F13;--admin-surface:#241519;--admin-card:#2E1B20;
+  --admin-border:rgba(255,255,255,0.08);
+  /* ── Typography ── */
+  --font-display:'Playfair Display',serif;
+  --font-body:'Poppins',sans-serif;
+}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#ddd;border-radius:4px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:#222;color:white;padding:13px 20px;border-radius:10px;font-size:0.84rem;z-index:9999;transform:translateY(120px);transition:transform 0.35s cubic-bezier(.22,1,.36,1);border-left:4px solid var(--rose);box-shadow:0 6px 28px rgba(0,0,0,0.18);max-width:320px;font-family:var(--font-body);}
+.toast.show{transform:translateY(0);}
+
+/* ── TOP ANNOUNCEMENT BAR ── */
+.top-bar{background:var(--rose);color:white;text-align:center;padding:8px 1rem;font-size:0.75rem;font-weight:500;letter-spacing:0.5px;font-family:var(--font-body);}
+.top-bar span{margin:0 12px;}
+
+/* ── NAV ── */
+nav.store-nav{background:#fff;border-bottom:1px solid var(--border2);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:68px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-logo-img{width:42px;height:42px;border-radius:10px;object-fit:cover;display:none;}
+.nav-logo-ph{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--rose-dark),var(--rose));display:flex;align-items:center;justify-content:center;color:white;font-size:1.1rem;font-weight:700;}
+.nav-brand-name{font-family:var(--font-display);font-size:1.5rem;color:var(--rose-dark);letter-spacing:-0.3px;}
+.nav-brand-name span{color:var(--rose);}
+.nav-links{display:flex;gap:1.75rem;}
+.nav-links a{text-decoration:none;color:var(--text2);font-size:0.85rem;font-weight:500;transition:color 0.2s;cursor:pointer;letter-spacing:0.2px;}
+.nav-links a:hover{color:var(--rose);}
+.nav-actions{display:flex;gap:.75rem;align-items:center;}
+.cart-btn{position:relative;cursor:pointer;padding:9px 16px;border-radius:8px;background:var(--rose-light);border:none;font-size:0.9rem;display:flex;align-items:center;gap:6px;font-family:var(--font-body);font-weight:600;color:var(--rose-dark);transition:background .2s;}
+.cart-btn:hover{background:#f8bbd0;}
+.cart-badge{background:var(--rose);color:white;font-size:10px;min-width:18px;height:18px;border-radius:9px;display:none;align-items:center;justify-content:center;font-weight:700;padding:0 4px;}
+.admin-btn{background:var(--text);color:white;border:none;padding:9px 18px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .2s;letter-spacing:0.3px;}
+.admin-btn:hover{background:var(--rose-dark);}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#2A1A1F 0%,#4A1528 45%,#7A2040 100%);padding:6rem 2rem 4.5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(232,50,90,.18) 0%,transparent 55%),radial-gradient(ellipse at 75% 40%,rgba(201,150,90,.12) 0%,transparent 55%);pointer-events:none;z-index:1;}
+
+/* HERO BG IMAGE SLIDER */
+.hero-bg-slides{position:absolute;inset:0;z-index:0;}
+.hero-bg-slide{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity 1.2s ease-in-out;}
+.hero-bg-slide.active{opacity:1;}
+.hero-bg-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:0;}
+.hero>*:not(.hero-bg-slides):not(.hero-bg-overlay){position:relative;z-index:2;}
+.hero-slider-dots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:10;}
+.hero-slider-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s;border:none;padding:0;}
+.hero-slider-dot.active{background:white;width:22px;border-radius:4px;}
+.hero-slide-prev,.hero-slide-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:10;transition:all .2s;backdrop-filter:blur(4px);}
+.hero-slide-prev{left:1.5rem;}.hero-slide-next{right:1.5rem;}
+.hero-slide-prev:hover,.hero-slide-next:hover{background:rgba(255,255,255,.28);}
+.hero-timer-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--rose);z-index:10;transition:none;border-radius:0 2px 2px 0;}
+/* Admin hero upload */
+.hero-img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:.75rem;margin-top:.75rem;}
+.hero-img-thumb{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:16/9;border:1.5px solid rgba(255,255,255,.1);}
+.hero-img-thumb img{width:100%;height:100%;object-fit:cover;}
+.hero-img-thumb.main-img::after{content:'MAIN';position:absolute;bottom:0;left:0;right:0;background:rgba(232,50,90,.85);color:white;font-size:9px;text-align:center;padding:3px;font-family:sans-serif;font-weight:700;}
+.hero-img-rm{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.65);color:white;border:none;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;}
+.hero-img-rm:hover{background:#E24B4A;}
+.hero-img-add{border:2px dashed rgba(255,255,255,.15);border-radius:10px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:border .2s;font-size:.7rem;color:rgba(255,255,255,.3);gap:4px;}
+.hero-img-add:hover{border-color:var(--rose);}
+.hero-img-add input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.timer-range{width:100%;accent-color:var(--rose);height:6px;cursor:pointer;}
+
+.hero-eyebrow{color:var(--gold);font-size:.7rem;letter-spacing:5px;text-transform:uppercase;margin-bottom:1rem;opacity:0;animation:fadeUp .7s .2s forwards;font-family:var(--font-body);}
+.hero h1{font-family:var(--font-display);font-size:clamp(2.4rem,5.5vw,4rem);color:white;line-height:1.12;margin-bottom:1.4rem;opacity:0;animation:fadeUp .7s .4s forwards;}
+.hero h1 em{color:var(--gold);font-style:italic;}
+.hero-tag{color:rgba(255,255,255,.65);font-size:.95rem;max-width:480px;margin:0 auto 2.5rem;line-height:1.75;opacity:0;animation:fadeUp .7s .6s forwards;font-family:var(--font-body);}
+.hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .8s forwards;}
+.btn-primary{background:var(--rose);color:white;border:none;padding:13px 30px;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .25s;font-family:var(--font-body);letter-spacing:0.3px;}
+.btn-primary:hover{background:var(--rose-dark);transform:translateY(-2px);box-shadow:0 8px 22px rgba(232,50,90,.38);}
+.btn-ghost{background:transparent;color:white;border:1.5px solid rgba(255,255,255,.4);padding:13px 30px;border-radius:8px;font-size:.88rem;font-weight:500;cursor:pointer;transition:all .25s;font-family:var(--font-body);}
+.btn-ghost:hover{border-color:white;background:rgba(255,255,255,.1);}
+.hero-stats{display:flex;justify-content:center;gap:3.5rem;margin-top:4rem;opacity:0;animation:fadeUp .7s 1s forwards;flex-wrap:wrap;}
+.stat-num{font-family:var(--font-display);font-size:2rem;color:white;font-weight:700;}
+.stat-label{font-size:.65rem;color:rgba(255,255,255,.5);letter-spacing:3px;text-transform:uppercase;margin-top:2px;font-family:var(--font-body);}
+
+/* ── SEARCH ── */
+.search-section{background:var(--rose-light);padding:1.5rem 2rem;}
+.search-wrap{max-width:600px;margin:0 auto;position:relative;}
+.search-input{width:100%;padding:13px 52px 13px 20px;border-radius:8px;border:2px solid transparent;font-size:.9rem;font-family:var(--font-body);outline:none;transition:border .2s;background:white;box-shadow:0 2px 12px rgba(232,50,90,.08);}
+.search-input:focus{border-color:var(--rose);}
+.search-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:var(--rose);color:white;border:none;width:38px;height:38px;border-radius:6px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.search-btn:hover{background:var(--rose-dark);}
+
+/* ── CATEGORIES ── */
+.cats-section{background:var(--white);padding:3.5rem 2rem;border-top:1px solid var(--border2);}
+.section-header{text-align:center;margin-bottom:2.5rem;}
+.section-eyebrow{font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--rose);font-weight:700;margin-bottom:.5rem;font-family:var(--font-body);}
+.section-title{font-family:var(--font-display);font-size:2rem;color:var(--text);margin-bottom:.4rem;}
+.section-sub{color:var(--text2);font-size:.875rem;font-family:var(--font-body);}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;max-width:920px;margin:0 auto;}
+.cat-card{background:var(--bg);border-radius:12px;padding:1.5rem .75rem;text-align:center;cursor:pointer;transition:all .25s;border:1.5px solid var(--border2);}
+.cat-card:hover{transform:translateY(-4px);border-color:var(--rose);box-shadow:0 8px 24px rgba(232,50,90,.12);background:white;}
+.cat-icon{font-size:2rem;margin-bottom:.6rem;display:block;}
+.cat-name{font-weight:600;font-size:.82rem;color:var(--text);font-family:var(--font-body);}
+.cat-count{font-size:.7rem;color:var(--text3);margin-top:2px;font-family:var(--font-body);}
+
+/* ── SHOP SECTION ── */
+.shop-section{padding:3.5rem 2rem;background:var(--bg);}
+.filter-bar{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;}
+.filter-btn{background:var(--white);border:1.5px solid var(--border2);color:var(--text2);padding:7px 18px;border-radius:20px;font-size:.8rem;cursor:pointer;transition:all .2s;font-family:var(--font-body);font-weight:500;}
+.filter-btn.active,.filter-btn:hover{background:var(--rose);border-color:var(--rose);color:white;}
+
+/* ── PRODUCT GRID ── */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:15px;max-width:1200px;margin:0 auto;}
+.product-card{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid var(--border2);transition:all .3s;animation:fadeIn .5s ease both;box-shadow:0 4px 12px rgba(0,0,0,0.06);}
+.product-card:hover{transform:scale(1.03);box-shadow:0 12px 28px rgba(0,0,0,0.12);}
+
+/* ── PRODUCT IMAGE SLIDER ── */
+.p-slider{position:relative;height:210px;overflow:hidden;background:#FFF0F3;}
+.p-slides{display:flex;height:100%;transition:transform .4s cubic-bezier(.22,1,.36,1);}
+.p-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3.8rem;position:relative;flex-shrink:0;}
+.p-slide img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.p-slide .emoji-fallback{position:relative;z-index:1;}
+.p-prev,.p-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.92);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;z-index:5;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.12);}
+.p-prev{left:7px;}.p-next{right:7px;}
+.p-prev:hover,.p-next:hover{background:white;transform:translateY(-50%) scale(1.1);}
+.p-dots{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:5;}
+.p-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.55);cursor:pointer;transition:all .2s;}
+.p-dot.active{background:var(--rose);width:14px;border-radius:3px;}
+.p-badge{position:absolute;top:10px;left:10px;color:white;font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;z-index:4;letter-spacing:0.4px;}
+.badge-sale{background:var(--rose);}.badge-new{background:#E91E63;}.badge-hot{background:#FF5722;}
+.wishlist-btn{position:absolute;top:9px;right:9px;background:white;border:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:all .2s;z-index:4;}
+.wishlist-btn:hover{transform:scale(1.2);box-shadow:0 4px 12px rgba(232,50,90,.3);}
+.img-count-pill{position:absolute;bottom:7px;right:9px;background:rgba(0,0,0,.42);color:white;font-size:10px;padding:2px 7px;border-radius:10px;z-index:4;font-family:var(--font-body);}
+
+/* ── PRODUCT INFO ── */
+.product-info{padding:12px;}
+.product-brand{font-size:.65rem;color:var(--rose);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:3px;font-family:var(--font-body);}
+.product-name{font-family:var(--font-body);font-size:.88rem;color:var(--text);margin-bottom:.4rem;line-height:1.4;font-weight:500;}
+.stars{color:#FF9800;font-size:11px;}
+.rating-count{font-size:10px;color:var(--text3);margin-left:3px;font-family:var(--font-body);}
+.product-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.7rem;}
+.product-price{font-family:var(--font-body);font-size:1rem;font-weight:700;color:var(--rose-dark);}
+.price-old{font-size:.75rem;color:var(--text3);text-decoration:line-through;font-family:var(--font-body);margin-left:4px;}
+.add-btn{background:var(--rose);color:white;border:none;width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s;font-weight:bold;}
+.add-btn:hover{background:var(--rose-dark);transform:scale(1.08);}
+
+/* ── LIGHTBOX ── */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:500;display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;}
+.lightbox.open{display:flex;}
+.lb-img-wrap{position:relative;max-width:90vw;max-height:75vh;display:flex;align-items:center;justify-content:center;}
+.lb-img-wrap img{max-width:90vw;max-height:72vh;border-radius:12px;object-fit:contain;}
+.lb-emoji{font-size:8rem;}
+.lb-close{position:fixed;top:20px;right:24px;background:rgba(255,255,255,.12);color:white;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:18px;}
+.lb-prev,.lb-next{position:fixed;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);color:white;border:none;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:18px;}
+.lb-prev{left:16px;}.lb-next{right:16px;}
+.lb-dots{display:flex;gap:6px;}
+.lb-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .2s;}
+.lb-dot.active{background:var(--rose);width:20px;border-radius:4px;}
+
+/* ── CART DRAWER ── */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;}
+.cart-overlay.open{opacity:1;pointer-events:all;}
+.cart-drawer{position:fixed;top:0;right:0;width:380px;height:100%;background:white;z-index:201;transform:translateX(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(0,0,0,0.12);}
+.cart-drawer.open{transform:translateX(0);}
+.cart-head{padding:1.5rem;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;z-index:1;}
+.cart-head h3{font-family:var(--font-display);font-size:1.25rem;color:var(--text);}
+.cart-close{background:var(--rose-light);border:none;width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:15px;color:var(--rose-dark);font-weight:700;}
+.cart-body{flex:1;padding:1rem 1.5rem;overflow-y:auto;}
+.cart-empty{text-align:center;padding:3rem 1rem;color:var(--text2);}
+.cart-empty-icon{font-size:3rem;margin-bottom:1rem;}
+.cart-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2);}
+.cart-item-img{width:60px;height:60px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;overflow:hidden;background:var(--rose-light);}
+.cart-item-img img{width:100%;height:100%;object-fit:cover;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-weight:600;font-size:.84rem;color:var(--text);font-family:var(--font-body);}
+.cart-item-brand{font-size:.7rem;color:var(--text3);margin:2px 0;font-family:var(--font-body);}
+.cart-item-price{font-weight:700;font-size:.88rem;color:var(--rose-dark);font-family:var(--font-body);}
+.cart-item-qty{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.qty-btn{background:var(--rose-light);border:none;width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:700;color:var(--rose-dark);}
+.qty-val{font-size:.875rem;font-weight:600;min-width:20px;text-align:center;font-family:var(--font-body);}
+.cart-remove{background:none;border:none;color:var(--text3);cursor:pointer;font-size:15px;margin-left:auto;padding:4px;}
+.cart-remove:hover{color:var(--rose);}
+.cart-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--border2);background:white;position:sticky;bottom:0;}
+.cart-total-row{display:flex;justify-content:space-between;margin-bottom:1rem;font-size:.95rem;font-weight:600;font-family:var(--font-body);}
+.cart-total-price{font-family:var(--font-display);font-size:1.2rem;color:var(--rose-dark);}
+.checkout-btn{width:100%;background:#25D366;color:white;border:none;padding:14px;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:all .2s;letter-spacing:.4px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.checkout-btn:hover{background:#1EB85A;transform:translateY(-1px);}
+.checkout-btn .wa-icon{font-size:1.1rem;}
+
+/* ── FOOTER ── */
+footer.store-footer{background:#1A1A2E;color:rgba(255,255,255,.55);padding:3rem 2rem 1.5rem;margin-top:0;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;max-width:1100px;margin:0 auto 2.5rem;}
+.footer-brand-name{font-family:var(--font-display);font-size:1.5rem;color:white;margin-bottom:.75rem;}
+.footer-brand-name span{color:var(--rose);}
+.footer-desc{font-size:.84rem;line-height:1.75;max-width:280px;font-family:var(--font-body);}
+.footer-col h4{color:rgba(255,255,255,.8);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;font-weight:600;font-family:var(--font-body);}
+.footer-col a{display:block;color:rgba(255,255,255,.45);font-size:.84rem;text-decoration:none;margin-bottom:.5rem;cursor:pointer;transition:color .2s;font-family:var(--font-body);}
+.footer-col a:hover{color:var(--rose);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:1.25rem;text-align:center;font-size:.77rem;max-width:1100px;margin:0 auto;font-family:var(--font-body);}
+.footer-social{display:flex;gap:.6rem;margin-top:1rem;}
+.social-btn{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.5);font-size:14px;cursor:pointer;transition:all .2s;}
+.social-btn:hover{background:var(--rose);color:white;transform:translateY(-2px);}
+
+/* ── PROMO STRIP between sections ── */
+.promo-strip{background:var(--rose-light);display:flex;justify-content:center;gap:3rem;padding:1rem 2rem;flex-wrap:wrap;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.promo-item{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--rose-dark);font-weight:500;font-family:var(--font-body);}
+.promo-item span{font-size:1.2rem;}
+
+/* ============================
+   ADMIN
+============================ */
+#adminApp{background:var(--admin-bg);min-height:100vh;display:none;}
+.admin-layout{display:flex;min-height:100vh;}
+.admin-sidebar{width:245px;background:var(--admin-surface);border-right:1px solid var(--admin-border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100%;z-index:50;}
+.sidebar-brand{padding:1.5rem 1.25rem;border-bottom:1px solid var(--admin-border);display:flex;align-items:center;gap:10px;}
+.sidebar-logo{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--rose-dark),var(--rose));display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;font-weight:700;flex-shrink:0;overflow:hidden;}
+.sidebar-logo img{width:100%;height:100%;object-fit:cover;display:none;}
+.sidebar-brand-name{font-family:var(--font-display);font-size:1.1rem;color:white;}
+.sidebar-brand-name span{color:var(--gold);}
+.sidebar-nav{flex:1;padding:1rem 0;overflow-y:auto;}
+.sidebar-section-label{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.75rem 1.25rem .4rem;font-weight:700;font-family:var(--font-body);}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 1.25rem;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;font-size:.85rem;font-weight:500;border-left:3px solid transparent;margin-bottom:2px;font-family:var(--font-body);}
+.sidebar-item:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.85);}
+.sidebar-item.active{background:rgba(232,50,90,.12);color:var(--rose-light);border-left-color:var(--rose);}
+.sidebar-item .icon{font-size:1rem;width:20px;text-align:center;}
+.sidebar-bottom{padding:1rem;border-top:1px solid var(--admin-border);}
+.view-store-btn{width:100%;background:var(--rose);color:white;border:none;padding:10px 16px;border-radius:10px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .2s;}
+.view-store-btn:hover{background:var(--rose-dark);}
+.admin-main{margin-left:245px;flex:1;padding:2rem;min-height:100vh;}
+.admin-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;}
+.page-title{font-family:var(--font-display);font-size:1.6rem;color:white;}
+.page-sub{font-size:.8rem;color:rgba(255,255,255,.35);margin-top:3px;font-family:var(--font-body);}
+.admin-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--rose-dark),var(--rose));display:flex;align-items:center;justify-content:center;color:white;font-size:.8rem;font-weight:700;}
+.admin-page{display:none;}
+.admin-page.active{display:block;}
+
+/* STAT CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1.25rem;margin-bottom:2rem;}
+.stat-card{background:var(--admin-card);border-radius:16px;padding:1.25rem 1.5rem;border:1px solid var(--admin-border);}
+.stat-card-label{font-size:.68rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:2px;margin-bottom:.6rem;font-weight:600;font-family:var(--font-body);}
+.stat-card-value{font-family:var(--font-display);font-size:1.9rem;color:white;font-weight:700;line-height:1;}
+.stat-change{font-size:.75rem;margin-top:6px;font-family:var(--font-body);}
+.change-up{color:#4ADE80;} .change-dn{color:#F87171;}
+
+/* SECTION CARD */
+.admin-section-card{background:var(--admin-card);border-radius:18px;border:1px solid var(--admin-border);padding:1.75rem;margin-bottom:1.5rem;}
+.admin-section-title{font-size:.9rem;font-weight:600;color:white;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-body);}
+.admin-section-title span{font-size:.72rem;color:rgba(255,255,255,.35);font-weight:400;}
+
+/* FORM */
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;}
+.fg{display:flex;flex-direction:column;gap:6px;}
+.fg.full{grid-column:1/-1;}
+.fl{font-size:.72rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;font-weight:600;font-family:var(--font-body);}
+.fi,.fs,.fta{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:white;padding:10px 14px;border-radius:10px;font-size:.875rem;transition:border .2s,background .2s;font-family:var(--font-body);outline:none;width:100%;}
+.fi:focus,.fs:focus,.fta:focus{border-color:var(--rose);background:rgba(255,255,255,.09);}
+.fi::placeholder{color:rgba(255,255,255,.2);}
+.fs option{background:#1A0F13;color:white;}
+.fta{resize:vertical;min-height:80px;line-height:1.6;}
+.hint{font-size:.72rem;color:rgba(255,255,255,.28);margin-top:2px;font-family:var(--font-body);}
+.form-actions{display:flex;gap:1rem;margin-top:1.75rem;flex-wrap:wrap;}
+.btn-submit{background:var(--rose);color:white;border:none;padding:11px 26px;border-radius:10px;font-size:.875rem;font-weight:600;cursor:pointer;font-family:var(--font-body);}
+.btn-submit:hover{background:var(--rose-dark);}
+.btn-cancel{background:rgba(255,255,255,.07);color:rgba(255,255,255,.6);border:none;padding:11px 22px;border-radius:10px;font-size:.875rem;cursor:pointer;font-family:var(--font-body);}
+.btn-cancel:hover{background:rgba(255,255,255,.12);}
+.btn-danger{background:rgba(226,75,74,.15);color:#F87171;border:1px solid rgba(226,75,74,.3);padding:8px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:var(--font-body);}
+.btn-danger:hover{background:rgba(226,75,74,.3);}
+.btn-edit{background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);border:none;padding:8px 14px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:var(--font-body);}
+.btn-edit:hover{background:rgba(255,255,255,.14);color:white;}
+
+/* UPLOAD */
+.upload-area{border:2px dashed rgba(255,255,255,.15);border-radius:12px;padding:1.75rem;text-align:center;cursor:pointer;transition:border .2s;position:relative;}
+.upload-area:hover{border-color:var(--rose);}
+.upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{font-size:2rem;margin-bottom:.5rem;}
+.upload-text{font-size:.85rem;color:rgba(255,255,255,.4);font-family:var(--font-body);}
+.upload-sub{font-size:.72rem;color:rgba(255,255,255,.25);margin-top:4px;font-family:var(--font-body);}
+.logo-preview{width:80px;height:80px;border-radius:14px;object-fit:cover;display:none;margin:0 auto .75rem;}
+
+/* IMAGE MULTI UPLOAD ADMIN */
+.img-upload-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.75rem;margin-top:.75rem;}
+.img-thumb-wrap{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:1;border:1.5px solid rgba(255,255,255,.1);}
+.img-thumb-wrap img{width:100%;height:100%;object-fit:cover;}
+.img-thumb-emoji{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;background:rgba(255,255,255,.05);}
+.img-thumb-rm{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);color:white;border:none;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;}
+.img-thumb-rm:hover{background:#E24B4A;}
+.img-upload-new{border:2px dashed rgba(255,255,255,.15);border-radius:10px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:border .2s;font-size:.7rem;color:rgba(255,255,255,.3);gap:4px;}
+.img-upload-new:hover{border-color:var(--rose);}
+.img-upload-new input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;}
+.atbl{width:100%;border-collapse:collapse;font-size:.82rem;}
+.atbl th{color:rgba(255,255,255,.3);text-align:left;padding:10px 14px;border-bottom:1px solid var(--admin-border);font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap;font-family:var(--font-body);}
+.atbl td{padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(255,255,255,.8);vertical-align:middle;font-family:var(--font-body);}
+.atbl tr:last-child td{border-bottom:none;}
+.atbl tr:hover td{background:rgba(255,255,255,.02);}
+.s-pill{display:inline-block;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--font-body);}
+.pill-active{background:rgba(74,222,128,.12);color:#4ADE80;}
+.pill-low{background:rgba(250,204,21,.12);color:#FACC15;}
+.pill-out{background:rgba(248,113,113,.12);color:#F87171;}
+.tbl-actions{display:flex;gap:6px;flex-wrap:wrap;}
+
+/* SWATCHES */
+.swatches{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.swatch{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .2s;}
+.swatch.selected{border-color:white;transform:scale(1.15);box-shadow:0 0 0 2px rgba(255,255,255,.2);}
+
+/* TOGGLES */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--admin-border);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-info h4{font-size:.875rem;color:white;font-weight:500;margin-bottom:3px;font-family:var(--font-body);}
+.toggle-info p{font-size:.78rem;color:rgba(255,255,255,.35);font-family:var(--font-body);}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:rgba(255,255,255,.15);border-radius:24px;cursor:pointer;transition:all .3s;}
+.toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:white;border-radius:50%;transition:all .3s;}
+.toggle input:checked+.toggle-slider{background:var(--rose);}
+.toggle input:checked+.toggle-slider::before{transform:translateX(20px);}
+
+/* FOOTER LINK EDITOR */
+.fl-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--admin-border);}
+.fl-item:last-child{border-bottom:none;}
+.fl-inp{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:white;padding:8px 12px;border-radius:8px;font-size:.8rem;font-family:var(--font-body);outline:none;flex:1;}
+.fl-inp:focus{border-color:var(--rose);}
+.btn-rm-lnk{background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:16px;padding:4px;}
+.btn-rm-lnk:hover{color:#F87171;}
+.btn-add-lnk{background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.15);color:rgba(255,255,255,.45);padding:8px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:var(--font-body);width:100%;margin-top:8px;}
+.btn-add-lnk:hover{background:rgba(255,255,255,.1);color:white;}
+
+/* FONT PREVIEW */
+.font-option{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;text-align:center;}
+.font-option:hover{border-color:rgba(255,255,255,.2);}
+.font-option.selected{border-color:var(--rose);background:rgba(232,50,90,.1);}
+.font-preview-text{font-size:1.2rem;color:white;margin-bottom:4px;}
+.font-option-name{font-size:.72rem;color:rgba(255,255,255,.4);font-family:'DM Sans',sans-serif;}
+.font-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem;}
+
+/* WA BOX */
+.wa-preview{background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.25);border-radius:12px;padding:1rem;margin-top:1rem;font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.7;font-family:var(--font-body);}
+.wa-num-display{color:#4ADE80;font-weight:700;font-size:1rem;}
+
+/* NOTIF DOT */
+.notif-dot{width:8px;height:8px;background:var(--rose);border-radius:50%;display:inline-block;margin-left:6px;vertical-align:middle;}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--admin-border);margin:1.5rem 0;}
+
+/* EMOJI PICKER */
+.emoji-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:8px;width:42px;height:42px;font-size:1.35rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.emoji-btn:hover{background:rgba(232,50,90,.2);border-color:var(--rose);transform:scale(1.15);}
+.emoji-btn.selected{background:rgba(232,50,90,.3);border-color:var(--rose);transform:scale(1.1);}
+
+/* DRAG DROP */
+.drag-over{background:rgba(232,50,90,.08)!important;border:2px dashed var(--rose)!important;}
+.dragging{opacity:.4;transform:scale(.97);}
+.img-thumb-wrap.dragging{opacity:.3;}
+.img-thumb-wrap{cursor:grab;user-select:none;}
+.img-thumb-wrap:active{cursor:grabbing;}
+.product-card.dragging-card{opacity:.3;transform:scale(.95);}
+.products-grid.drag-active .product-card{transition:transform .2s;}
+.drop-indicator{border:2px dashed var(--rose)!important;opacity:.6;}
+
+/* HERO BG PRESET HOVER */
+#heroBgPresets div:hover{border-color:rgba(255,255,255,.6)!important;transform:scale(1.05);}
+#heroBgPresets div{transition:all .2s;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@media(max-width:900px){
+  .products-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+  .top-bar span:nth-child(2){display:none;}
+}
+@media(max-width:768px){
+  .footer-top{grid-template-columns:1fr;}
+  .admin-sidebar{transform:translateX(-100%);}
+  .admin-main{margin-left:0;}
+  .fg2,.fg3{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .hero{padding:4rem 1.25rem 3rem;}
+  .products-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .product-info{padding:10px;}
+  .cats-section,.shop-section{padding:2.5rem 1rem;}
+  .promo-strip{gap:1rem;}
+  .top-bar{font-size:.7rem;}
+  .cart-drawer{width:100%;}
+  .hero-slide-prev,.hero-slide-next{width:34px;height:34px;font-size:15px;}
+}
+@media(max-width:420px){
+  .products-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
+  .nav-actions .admin-btn{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+<div id="saveIndicator" style="position:fixed;top:16px;right:16px;background:rgba(34,34,34,0.92);color:rgba(255,255,255,0.7);padding:7px 14px;border-radius:8px;font-size:0.75rem;z-index:9998;display:none;align-items:center;gap:6px;font-family:'Poppins',sans-serif;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);">
+  <span id="saveIcon">💾</span><span id="saveText">Saving...</span>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLB()">✕</button>
+  <button class="lb-prev" onclick="lbMove(-1)">‹</button>
+  <div class="lb-img-wrap" id="lbImgWrap"></div>
+  <button class="lb-next" onclick="lbMove(1)">›</button>
+  <div class="lb-dots" id="lbDots"></div>
+</div>
+
+<!-- ======================== STORE ======================== -->
+<div id="storeApp">
+<div class="top-bar">
+  <span>🚚 Free delivery on orders over Rs.2,000</span>
+  <span>💄 Mishi Khan — Pakistan's Premium Beauty Destination</span>
+  <span>✨ New arrivals every week!</span>
+</div>
+<nav class="store-nav">
+  <div class="nav-brand" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <div class="nav-logo-ph" id="navLogoPH">M</div>
+    <img class="nav-logo-img" id="navLogoImg" src="" alt="">
+    <div class="nav-brand-name" id="navBrandName">Mishi<span> Khan</span></div>
+  </div>
+  <div class="nav-links">
+    <a onclick="document.getElementById('shopSection').scrollIntoView({behavior:'smooth'})">Shop</a>
+    <a onclick="document.getElementById('catsSection').scrollIntoView({behavior:'smooth'})">Categories</a>
+    <a onclick="openAdmin()">Admin</a>
+    <a>About</a>
+  </div>
+  <div class="nav-actions">
+    <button class="cart-btn" onclick="toggleCart()">🛍️ <span id="cartCountNav">0</span><div class="cart-badge" id="cartBadge">0</div></button>
+    <button class="admin-btn" onclick="openAdmin()">⚙️ Admin Panel</button>
+  </div>
+</nav>
+
+<section class="hero" id="heroSection">
+  <!-- BG IMAGE SLIDER -->
+  <div class="hero-bg-slides" id="heroBgSlides"></div>
+  <div class="hero-bg-overlay" id="heroBgOverlay"></div>
+  <!-- PREV / NEXT (hidden when no images) -->
+  <button class="hero-slide-prev" id="heroSlidePrev" onclick="heroSlideMove(-1)" style="display:none;">‹</button>
+  <button class="hero-slide-next" id="heroSlideNext" onclick="heroSlideMove(1)" style="display:none;">›</button>
+  <!-- CONTENT -->
+  <div class="hero-eyebrow" id="heroEyebrow">Premium Beauty Collection</div>
+  <h1 id="heroHeading">Unleash Your<br><em>Inner Glow</em></h1>
+  <p class="hero-tag" id="heroTagline">Discover luxury makeup that celebrates your unique beauty — from bold lips to flawless skin.</p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="document.getElementById('shopSection').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+    <button class="btn-ghost" onclick="document.getElementById('catsSection').scrollIntoView({behavior:'smooth'})">Explore Categories</button>
+  </div>
+  <div class="hero-stats" id="heroStats">
+    <div><div class="stat-num">200+</div><div class="stat-label">Products</div></div>
+    <div><div class="stat-num">50K+</div><div class="stat-label">Happy Clients</div></div>
+    <div><div class="stat-num">4.9★</div><div class="stat-label">Rating</div></div>
+  </div>
+  <!-- DOTS + TIMER BAR -->
+  <div class="hero-slider-dots" id="heroSliderDots"></div>
+  <div class="hero-timer-bar" id="heroTimerBar" style="width:0%;"></div>
+</section>
+
+<div class="promo-strip">
+  <div class="promo-item"><span>🚚</span> Free Delivery on Rs.2000+</div>
+  <div class="promo-item"><span>↩️</span> Easy 7-Day Returns</div>
+  <div class="promo-item"><span>💯</span> 100% Authentic Products</div>
+  <div class="promo-item"><span>🔒</span> Secure WhatsApp Ordering</div>
+</div>
+
+<div class="search-section" id="searchSection">
+  <div class="search-wrap">
+    <input class="search-input" id="searchInput" placeholder="Search lipstick, foundation, mascara..." oninput="searchProducts(this.value)">
+    <button class="search-btn">🔍</button>
+  </div>
+</div>
+
+<section class="cats-section" id="catsSection">
+  <div class="section-header">
+    <div class="section-eyebrow">Browse By</div>
+    <h2 class="section-title">Shop Categories</h2>
+  </div>
+  <div class="cat-grid" id="catGrid"></div>
+</section>
+
+<section class="shop-section" id="shopSection">
+  <div class="section-header">
+    <div class="section-eyebrow">Featured</div>
+    <h2 class="section-title">Bestsellers</h2>
+    <p class="section-sub">Loved by thousands, trusted by beauty experts</p>
+  </div>
+  <div class="filter-bar" id="filterBar"></div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<footer class="store-footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name" id="footerBrandName">Mishi<span> Khan</span></div>
+      <p class="footer-desc" id="footerDesc">Pakistan's premium beauty destination. Bringing luxury makeup to every doorstep with love.</p>
+      <div class="footer-social">
+        <button class="social-btn">📘</button>
+        <button class="social-btn">📸</button>
+        <button class="social-btn">🐦</button>
+      </div>
+    </div>
+    <div class="footer-col"><h4 id="footerCol1Title">Quick Links</h4><div id="footerCol1Links"></div></div>
+    <div class="footer-col"><h4 id="footerCol2Title">Help</h4><div id="footerCol2Links"></div></div>
+  </div>
+  <div class="footer-bottom"><p id="footerCopyright">© 2025 Mishi Khan. All rights reserved. Made with ❤️ in Pakistan.</p></div>
+</footer>
+</div><!-- end storeApp -->
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <h3>My Bag 🛍️</h3>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total-row"><span>Total</span><span class="cart-total-price" id="cartTotalPrice">Rs. 0</span></div>
+    <button class="checkout-btn" onclick="whatsappCheckout()"><span class="wa-icon">💬</span> Order via WhatsApp</button>
+  </div>
+</div>
+
+<!-- ======================== ADMIN ======================== -->
+<div id="adminApp">
+<div class="admin-layout">
+<aside class="admin-sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-logo" id="sidebarLogo">M<img id="sidebarLogoImg" src="" alt=""></div>
+    <div class="sidebar-brand-name" id="sidebarBrandName">Mishi<span> Khan</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Main</div>
+    <div class="sidebar-item active" onclick="aPage(this,'dashboard')"><span class="icon">📊</span>Dashboard</div>
+    <div class="sidebar-item" onclick="aPage(this,'orders')"><span class="icon">📦</span>Orders <span class="notif-dot"></span></div>
+    <div class="sidebar-section-label">Catalog</div>
+    <div class="sidebar-item" onclick="aPage(this,'products')"><span class="icon">🛍️</span>Products</div>
+    <div class="sidebar-item" id="addProductSideItem" onclick="aPage(this,'addProduct')"><span class="icon">➕</span>Add Product</div>
+    <div class="sidebar-item" onclick="aPage(this,'categories')"><span class="icon">🗂️</span>Categories</div>
+    <div class="sidebar-section-label">Store</div>
+    <div class="sidebar-item" onclick="aPage(this,'branding')"><span class="icon">🎨</span>Branding</div>
+    <div class="sidebar-item" onclick="aPage(this,'theme')"><span class="icon">🖌️</span>Theme & Fonts</div>
+    <div class="sidebar-item" onclick="aPage(this,'hero')"><span class="icon">🖼️</span>Hero Section</div>
+    <div class="sidebar-item" onclick="aPage(this,'footer')"><span class="icon">📄</span>Footer</div>
+    <div class="sidebar-item" onclick="aPage(this,'whatsapp')"><span class="icon">💬</span>WhatsApp</div>
+    <div class="sidebar-section-label">Account</div>
+    <div class="sidebar-item" onclick="aPage(this,'settings')"><span class="icon">⚙️</span>Settings</div>
+  </nav>
+  <div class="sidebar-bottom">
+    <button class="view-store-btn" onclick="closeAdmin()">← View Store</button>
+  </div>
+</aside>
+
+<main class="admin-main">
+  <div class="admin-topbar">
+    <div>
+      <div class="page-title" id="adminPageTitle">Dashboard</div>
+      <div class="page-sub" id="adminPageSub">Welcome back — here's what's happening</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div style="font-size:.78rem;color:rgba(255,255,255,.3);" id="adminDT"></div>
+      <div class="admin-avatar">AD</div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="admin-page active" id="page-dashboard">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-card-label">Revenue</div><div class="stat-card-value" id="dashRev">Rs. 0</div><div class="stat-change change-up">↑ 12.5%</div></div>
+      <div class="stat-card"><div class="stat-card-label">Products</div><div class="stat-card-value" id="dashProds">0</div><div class="stat-change change-up">↑ Active</div></div>
+      <div class="stat-card"><div class="stat-card-label">Orders</div><div class="stat-card-value" id="dashOrds">0</div><div class="stat-change change-up">↑ Today</div></div>
+      <div class="stat-card"><div class="stat-card-label">Cart Items</div><div class="stat-card-value" id="dashCart">0</div></div>
+    </div>
+    <div class="admin-section-card">
+      <div class="admin-section-title">Quick Actions</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <button class="btn-submit" onclick="aPage(document.getElementById('addProductSideItem'),'addProduct')">➕ Add Product</button>
+        <button class="btn-cancel" onclick="aPage(null,'branding')">🎨 Branding</button>
+        <button class="btn-cancel" onclick="aPage(null,'theme')">🖌️ Theme & Fonts</button>
+        <button class="btn-cancel" onclick="aPage(null,'whatsapp')">💬 WhatsApp</button>
+      </div>
+    </div>
+    <div class="admin-section-card">
+      <div class="admin-section-title">Store Summary</div>
+      <div id="dashSummary" style="color:rgba(255,255,255,.4);font-size:.85rem;line-height:2.2;"></div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="admin-page" id="page-products">
+    <div class="admin-section-card">
+      <div class="admin-section-title">All Products <span id="prodCountLbl"></span></div>
+      <p style="color:rgba(255,255,255,.35);font-size:.8rem;margin-bottom:1rem;font-family:var(--font-body);">⠿ Rows drag karo upar neeche — position store pe bhi update ho jati hai instantly.</p>
+      <div class="tbl-wrap">
+        <table class="atbl">
+          <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Images</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="prodTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT PRODUCT -->
+  <div class="admin-page" id="page-addProduct">
+    <div class="admin-section-card">
+      <div class="admin-section-title" id="addProductTitle">Add New Product</div>
+      <div class="fg2">
+        <div class="fg"><label class="fl">Product Name *</label><input class="fi" id="pName" placeholder="e.g. Velvet Matte Lipstick"></div>
+        <div class="fg"><label class="fl">Brand *</label><input class="fi" id="pBrand" placeholder="e.g. MAC, Huda Beauty"></div>
+        <div class="fg"><label class="fl">Category *</label><select class="fs" id="pCat"></select></div>
+        <div class="fg"><label class="fl">Emoji Icon (fallback)</label>
+          <select class="fs" id="pEmoji">
+            <option value="💄">💄 Lipstick</option><option value="👄">👄 Lip Gloss</option>
+            <option value="✨">✨ Highlighter</option><option value="🌟">🌟 Foundation</option>
+            <option value="🖌️">🖌️ Brush</option><option value="👁️">👁️ Mascara</option>
+            <option value="🌹">🌹 Skincare</option><option value="💋">💋 Lip Liner</option>
+            <option value="🎨">🎨 Palette</option><option value="🧴">🧴 Serum</option>
+            <option value="💅">💅 Nail Polish</option><option value="🌸">🌸 Perfume</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Price (Rs.) *</label><input class="fi" id="pPrice" type="number" placeholder="e.g. 2500"></div>
+        <div class="fg"><label class="fl">Original Price (Rs.)</label><input class="fi" id="pOldPrice" type="number" placeholder="Optional — strikethrough"></div>
+        <div class="fg"><label class="fl">Stock Qty</label><input class="fi" id="pStock" type="number" placeholder="e.g. 50"></div>
+        <div class="fg"><label class="fl">Badge</label>
+          <select class="fs" id="pBadge">
+            <option value="">None</option><option value="sale">SALE</option>
+            <option value="new">NEW</option><option value="hot">HOT</option>
+          </select>
+        </div>
+        <div class="fg full"><label class="fl">Description</label><textarea class="fta" id="pDesc" placeholder="Short product description..."></textarea></div>
+        <div class="fg full"><label class="fl">Card Background Color</label><div class="swatches" id="bgSwatches"></div></div>
+      </div>
+
+      <!-- IMAGE UPLOAD -->
+      <hr class="divider">
+      <div class="admin-section-title" style="margin-bottom:1rem;">Product Images (Multiple) <span>Upload up to 8 images — first is main</span></div>
+      <div class="img-upload-grid" id="imgUploadGrid">
+        <div class="img-upload-new" id="imgAddBtn">
+          <input type="file" accept="image/*" multiple onchange="handleImgUpload(this)">
+          <div style="font-size:1.5rem;">📷</div>
+          <div>Add Images</div>
+        </div>
+      </div>
+      <p class="hint" style="margin-top:.5rem;">Click thumbnails on store to open full-screen slider. Images are stored locally in browser.</p>
+
+      <div class="form-actions">
+        <button class="btn-submit" id="prodSubmitBtn" onclick="submitProduct()">+ Add to Store</button>
+        <button class="btn-cancel" onclick="clearProductForm()">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="admin-page" id="page-categories">
+    <div class="admin-section-card">
+      <div class="admin-section-title">Add New Category</div>
+      <div class="fg2" style="margin-bottom:1rem;">
+        <div class="fg"><label class="fl">Category Name</label><input class="fi" id="catName" placeholder="e.g. Blush"></div>
+        <div class="fg"><label class="fl">Selected Emoji</label><input class="fi" id="catEmoji" placeholder="Click emoji below" maxlength="4" style="font-size:1.4rem;text-align:center;"></div>
+      </div>
+      <label class="fl" style="margin-bottom:.6rem;display:block;">Pick Emoji Icon</label>
+      <div id="emojiPickerGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:6px;max-height:260px;overflow-y:auto;padding:4px;"></div>
+      <div class="form-actions" style="margin-top:1rem;">
+        <button class="btn-submit" onclick="addCategory()">+ Add Category</button>
+      </div>
+      <hr class="divider">
+      <div class="admin-section-title" style="margin-bottom:1rem;">Existing Categories <span>Drag to reorder</span></div>
+      <div id="categoryList"></div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div class="admin-page" id="page-orders">
+    <div class="admin-section-card">
+      <div class="admin-section-title">Cart / Orders <span id="orderCount"></span></div>
+      <div id="ordersContent"></div>
+    </div>
+  </div>
+
+  <!-- BRANDING -->
+  <div class="admin-page" id="page-branding">
+    <div class="admin-section-card">
+      <div class="admin-section-title">Brand Logo</div>
+      <div class="upload-area">
+        <input type="file" accept="image/*" onchange="uploadLogo(this)">
+        <img class="logo-preview" id="logoPreview" src="" alt="">
+        <div class="upload-icon">🖼️</div>
+        <div class="upload-text">Click to upload brand logo</div>
+        <div class="upload-sub">PNG, JPG, SVG</div>
+      </div>
+      <button class="btn-danger" style="margin-top:1rem;" onclick="removeLogo()">Remove Logo</button>
+    </div>
+    <div class="admin-section-card">
+      <div class="admin-section-title">Brand Name</div>
+      <div class="fg2">
+        <div class="fg"><label class="fl">Brand Name (Part 1)</label><input class="fi" id="brandName1" value="Mishi"></div>
+        <div class="fg"><label class="fl">Brand Name (Part 2 — gold)</label><input class="fi" id="brandName2" value=" Khan"></div>
+      </div>
+      <div class="form-actions"><button class="btn-submit" onclick="saveBranding()">Save Branding</button></div>
+    </div>
+  </div>
+
+  <!-- THEME & FONTS -->
+  <div class="admin-page" id="page-theme">
+    <div class="admin-section-card">
+      <div class="admin-section-title">Store Theme Color <span>Preset + Custom</span></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;" id="themeSwatches">
+        <div class="swatch selected" style="background:#E8325A;" onclick="setTheme(this,'#E8325A','#FDE8EE','#B01E3E')" title="Rose"></div>
+        <div class="swatch" style="background:#8B5CF6;" onclick="setTheme(this,'#8B5CF6','#EDE9FE','#6D28D9')" title="Purple"></div>
+        <div class="swatch" style="background:#EC4899;" onclick="setTheme(this,'#EC4899','#FCE7F3','#BE185D')" title="Hot Pink"></div>
+        <div class="swatch" style="background:#F59E0B;" onclick="setTheme(this,'#F59E0B','#FEF3C7','#B45309')" title="Gold"></div>
+        <div class="swatch" style="background:#10B981;" onclick="setTheme(this,'#10B981','#D1FAE5','#047857')" title="Emerald"></div>
+        <div class="swatch" style="background:#3B82F6;" onclick="setTheme(this,'#3B82F6','#DBEAFE','#1D4ED8')" title="Blue"></div>
+        <div class="swatch" style="background:#EF4444;" onclick="setTheme(this,'#EF4444','#FEE2E2','#B91C1C')" title="Red"></div>
+        <div class="swatch" style="background:#14B8A6;" onclick="setTheme(this,'#14B8A6','#CCFBF1','#0F766E')" title="Teal"></div>
+        <div class="swatch" style="background:#F97316;" onclick="setTheme(this,'#F97316','#FFEDD5','#C2410C')" title="Orange"></div>
+        <div class="swatch" style="background:#D946EF;" onclick="setTheme(this,'#D946EF','#FAE8FF','#A21CAF')" title="Fuchsia"></div>
+        <div class="swatch" style="background:#06B6D4;" onclick="setTheme(this,'#06B6D4','#CFFAFE','#0E7490')" title="Cyan"></div>
+        <div class="swatch" style="background:#84CC16;" onclick="setTheme(this,'#84CC16','#F7FEE7','#4D7C0F')" title="Lime"></div>
+        <!-- Custom color picker swatch -->
+        <label title="Pick custom color" style="position:relative;width:30px;height:30px;border-radius:50%;background:conic-gradient(red,yellow,green,cyan,blue,magenta,red);cursor:pointer;border:2.5px solid rgba(255,255,255,0.4);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+          <input type="color" id="customThemeColor" style="opacity:0;position:absolute;width:100%;height:100%;cursor:pointer;" onchange="setCustomTheme(this.value)">
+          <span style="font-size:12px;color:white;text-shadow:0 1px 3px rgba(0,0,0,0.8);pointer-events:none;">+</span>
+        </label>
+      </div>
+      <p class="hint" style="margin-top:.75rem;">Preset colors + click the rainbow circle to pick any custom color.</p>
+    </div>
+    <div class="admin-section-card">
+      <div class="admin-section-title">Hero Background <span>Gradient & Colors</span></div>
+      <div class="fg2">
+        <div class="fg">
+          <label class="fl">Hero Gradient Style</label>
+          <select class="fs" id="heroGradientStyle" onchange="applyHeroGradient()">
+            <option value="dark-rose">Dark Rose (Default)</option>
+            <option value="dark-purple">Dark Purple</option>
+            <option value="dark-navy">Dark Navy</option>
+            <option value="dark-green">Dark Emerald</option>
+            <option value="dark-charcoal">Charcoal</option>
+            <option value="custom">Custom Colors</option>
+          </select>
+        </div>
+        <div class="fg" id="heroCustomColors" style="display:none;">
+          <label class="fl">Custom Color 1</label>
+          <input type="color" class="fi" id="heroBgColor1" value="#2A1A1F" style="padding:4px;height:42px;cursor:pointer;" oninput="applyHeroGradient()">
+        </div>
+        <div class="fg" id="heroCustomColors2" style="display:none;">
+          <label class="fl">Custom Color 2</label>
+          <input type="color" class="fi" id="heroBgColor2" value="#7A2040" style="padding:4px;height:42px;cursor:pointer;" oninput="applyHeroGradient()">
+        </div>
+      </div>
+      <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap;" id="heroBgPresets">
+        <div onclick="setHeroBgPreset(this,'dark-rose')" style="width:50px;height:36px;border-radius:8px;background:linear-gradient(135deg,#2A1A1F,#7A2040);cursor:pointer;border:2px solid var(--rose);title:'Dark Rose'"></div>
+        <div onclick="setHeroBgPreset(this,'dark-purple')" style="width:50px;height:36px;border-radius:8px;background:linear-gradient(135deg,#1A0F2E,#5B21B6);cursor:pointer;border:2px solid transparent;"></div>
+        <div onclick="setHeroBgPreset(this,'dark-navy')" style="width:50px;height:36px;border-radius:8px;background:linear-gradient(135deg,#0F172A,#1D4ED8);cursor:pointer;border:2px solid transparent;"></div>
+        <div onclick="setHeroBgPreset(this,'dark-green')" style="width:50px;height:36px;border-radius:8px;background:linear-gradient(135deg,#064E3B,#10B981);cursor:pointer;border:2px solid transparent;"></div>
+        <div onclick="setHeroBgPreset(this,'dark-charcoal')" style="width:50px;height:36px;border-radius:8px;background:linear-gradient(135deg,#111827,#374151);cursor:pointer;border:2px solid transparent;"></div>
+      </div>
+    </div>
+
+    <div class="admin-section-card">
+      <div class="admin-section-title">Display / Heading Font <span>Used for product names, headings</span></div>
+      <div class="font-grid" id="displayFontGrid"></div>
+    </div>
+
+    <div class="admin-section-card">
+      <div class="admin-section-title">Body / UI Font <span>Used for buttons, text, labels</span></div>
+      <div class="font-grid" id="bodyFontGrid"></div>
+    </div>
+
+    <div class="admin-section-card">
+      <div class="admin-section-title">Font Size <span>Base text size for store</span></div>
+      <div class="fg2">
+        <div class="fg">
+          <label class="fl">Base Font Size</label>
+          <select class="fs" id="fontSizeSelect" onchange="setFontSize(this.value)">
+            <option value="14px">Small (14px)</option>
+            <option value="16px" selected>Medium (16px) — Default</option>
+            <option value="18px">Large (18px)</option>
+            <option value="20px">Extra Large (20px)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="admin-page" id="page-hero">
+    <div class="admin-section-card">
+      <div class="admin-section-title">Hero Content</div>
+      <div class="fg2">
+        <div class="fg"><label class="fl">Eyebrow Text</label><input class="fi" id="heroEyebrowInp" value="Premium Beauty Collection"></div>
+        <div class="fg"><label class="fl">Tagline</label><input class="fi" id="heroTaglineInp" value="Discover luxury makeup that celebrates your unique beauty."></div>
+        <div class="fg"><label class="fl">Heading Line 1</label><input class="fi" id="heroLine1" value="Unleash Your"></div>
+        <div class="fg"><label class="fl">Heading Line 2 (italic gold)</label><input class="fi" id="heroLine2" value="Inner Glow"></div>
+      </div>
+      <div class="form-actions"><button class="btn-submit" onclick="saveHero()">Save Hero</button></div>
+    </div>
+    <div class="admin-section-card">
+      <div class="admin-section-title">Hero Stats</div>
+      <div class="fg3">
+        <div class="fg"><label class="fl">Stat 1 Number</label><input class="fi" id="s1n" value="200+"></div>
+        <div class="fg"><label class="fl">Stat 1 Label</label><input class="fi" id="s1l" value="Products"></div>
+        <div class="fg" style="visibility:hidden"></div>
+        <div class="fg"><label class="fl">Stat 2 Number</label><input class="fi" id="s2n" value="50K+"></div>
+        <div class="fg"><label class="fl">Stat 2 Label</label><input class="fi" id="s2l" value="Happy Clients"></div>
+        <div class="fg" style="visibility:hidden"></div>
+        <div class="fg"><label class="fl">Stat 3 Number</label><input class="fi" id="s3n" value="4.9★"></div>
+        <div class="fg"><label class="fl">Stat 3 Label</label><input class="fi" id="s3l" value="Rating"></div>
+      </div>
+      <div class="form-actions"><button class="btn-submit" onclick="saveHeroStats()">Save Stats</button></div>
+    </div>
+
+    <!-- HERO BG IMAGES -->
+    <div class="admin-section-card">
+      <div class="admin-section-title">Hero Background Images <span>Slider — Up to 10 images</span></div>
+      <p style="color:rgba(255,255,255,.35);font-size:.8rem;margin-bottom:1rem;font-family:var(--font-body);">
+        Background images upload karein — Auto slider chalta rahega. Images pe gradient overlay automatically lagta hai taake text readable rahe. Pehli image main background hogi.
+      </p>
+      <div class="hero-img-grid" id="heroImgGrid">
+        <div class="hero-img-add">
+          <input type="file" accept="image/*" multiple onchange="handleHeroImgUpload(this)">
+          <div style="font-size:1.6rem;">🖼️</div>
+          <div>Add Images</div>
+        </div>
+      </div>
+      <div class="form-actions" style="margin-top:1.25rem;">
+        <button class="btn-danger" onclick="clearHeroImages()">🗑️ Remove All Images</button>
+      </div>
+    </div>
+
+    <!-- SLIDER SETTINGS -->
+    <div class="admin-section-card">
+      <div class="admin-section-title">Auto Slider Settings</div>
+      <div class="fg2">
+        <div class="fg">
+          <label class="fl">Slider Speed — <span id="sliderSpeedLabel" style="color:var(--rose);">5 seconds</span></label>
+          <input type="range" class="timer-range" id="sliderSpeedRange" min="1" max="10" value="5"
+            oninput="updateSliderSpeed(this.value)">
+          <div style="display:flex;justify-content:space-between;margin-top:4px;">
+            <span style="font-size:.7rem;color:rgba(255,255,255,.3);">1 sec (fast)</span>
+            <span style="font-size:.7rem;color:rgba(255,255,255,.3);">10 sec (slow)</span>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">Transition Effect</label>
+          <select class="fs" id="sliderTransition" onchange="SD.heroSlider.transition=this.value;">
+            <option value="fade">Fade (Smooth)</option>
+            <option value="slide">Slide (Left-Right)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Overlay Darkness</label>
+          <select class="fs" id="overlayDarkness" onchange="setOverlayDarkness(this.value)">
+            <option value="0.2">Light (20%)</option>
+            <option value="0.45" selected>Medium (45%) — Default</option>
+            <option value="0.6">Dark (60%)</option>
+            <option value="0.75">Very Dark (75%)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Auto Slider</label>
+          <div class="toggle-row" style="padding:8px 0;border:none;">
+            <div class="toggle-info"><h4 style="font-size:.85rem;">Auto Play</h4><p>Automatically slide every N seconds</p></div>
+            <label class="toggle"><input type="checkbox" id="autoPlayToggle" checked onchange="toggleAutoPlay(this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-submit" onclick="saveSliderSettings()">💾 Save Slider Settings</button>
+        <button class="btn-cancel" onclick="previewHeroSlider()">▶️ Preview Slider</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER EDITOR -->
+  <div class="admin-page" id="page-footer">
+    <div class="admin-section-card">
+      <div class="admin-section-title">Footer Brand</div>
+      <div class="fg2">
+        <div class="fg"><label class="fl">Brand Part 1</label><input class="fi" id="fBrand1" value="Mishi"></div>
+        <div class="fg"><label class="fl">Brand Part 2 (gold)</label><input class="fi" id="fBrand2" value=" Khan"></div>
+        <div class="fg full"><label class="fl">Footer Description</label><textarea class="fta" id="fDesc">Pakistan's premium beauty destination. Bringing luxury makeup to every doorstep with love.</textarea></div>
+      </div>
+      <div class="form-actions"><button class="btn-submit" onclick="saveFooterBrand()">Save</button></div>
+    </div>
+    <div class="admin-section-card">
+      <div class="admin-section-title">Column 1 — Quick Links</div>
+      <div class="fg" style="margin-bottom:10px;"><label class="fl">Column Title</label><input class="fi" id="fc1title" value="Quick Links"></div>
+      <div id="fc1"></div>
+      <button class="btn-add-lnk" onclick="addFLink(1)">+ Add Link</button>
+      <div class="form-actions"><button class="btn-submit" onclick="saveFooterLinks()">Save</button></div>
+    </div>
+    <div class="admin-section-card">
+      <div class="admin-section-title">Column 2 — Help</div>
+      <div class="fg" style="margin-bottom:10px;"><label class="fl">Column Title</label><input class="fi" id="fc2title" value="Help"></div>
+      <div id="fc2"></div>
+      <button class="btn-add-lnk" onclick="addFLink(2)">+ Add Link</button>
+      <div class="form-actions"><button class="btn-submit" onclick="saveFooterLinks()">Save</button></div>
+    </div>
+    <div class="admin-section-card">
+      <div class="admin-section-title">Copyright</div>
+      <div class="fg"><label class="fl">Copyright Text</label><input class="fi" id="fCopy" value="© 2025 Mishi Khan. All rights reserved. Made with ❤️ in Pakistan."></div>
+      <div class="form-actions"><button class="btn-submit" onclick="saveCopyright()">Save</button></div>
+    </div>
+  </div>
+
+  <!-- WHATSAPP -->
+  <div class="admin-page" id="page-whatsapp">
+    <div class="admin-section-card">
+      <div class="admin-section-title">WhatsApp Order Settings</div>
+      <div class="fg2">
+        <div class="fg">
+          <label class="fl">WhatsApp Number *</label>
+          <input class="fi" id="waNumber" placeholder="923001234567 (with country code, no +)">
+          <div class="hint">Example: 923001234567 for +92 300 1234567</div>
+        </div>
+        <div class="fg">
+          <label class="fl">Store Owner Name</label>
+          <input class="fi" id="waOwnerName" placeholder="e.g. Mishi Khan">
+        </div>
+        <div class="fg full">
+          <label class="fl">Custom Order Message Template</label>
+          <textarea class="fta" id="waMsgTemplate" style="min-height:120px;">🛍️ *New Order from {storeName}*
+
+{orderItems}
+
+💰 *Total: {total}*
+
+📦 Please confirm my order. Shukriya! 🌸</textarea>
+          <div class="hint">Use {storeName}, {orderItems}, {total} as placeholders</div>
+        </div>
+      </div>
+      <div class="wa-preview" id="waPreview">
+        <div style="color:rgba(255,255,255,.5);margin-bottom:.5rem;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;">Live Preview</div>
+        <div id="waPreviewText"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-submit" onclick="saveWA()">💾 Save WhatsApp Settings</button>
+        <button class="btn-cancel" onclick="testWA()">🧪 Send Test Message</button>
+      </div>
+    </div>
+    <div class="admin-section-card">
+      <div class="admin-section-title">WhatsApp Status</div>
+      <div class="toggle-row">
+        <div class="toggle-info"><h4>Enable WhatsApp Checkout</h4><p>Show "Order via WhatsApp" button in cart</p></div>
+        <label class="toggle"><input type="checkbox" id="waEnabled" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><h4>Include Product Images Link</h4><p>Add image description in WhatsApp message</p></div>
+        <label class="toggle"><input type="checkbox" id="waIncludeImages" checked><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="admin-page" id="page-settings">
+    <div class="admin-section-card">
+      <div class="admin-section-title">Store Visibility</div>
+      <div class="toggle-row">
+        <div class="toggle-info"><h4>Show Search Bar</h4><p>Display search on homepage</p></div>
+        <label class="toggle"><input type="checkbox" checked onchange="document.getElementById('searchSection').style.display=this.checked?'':'none'"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><h4>Show Categories Section</h4><p>Category grid on homepage</p></div>
+        <label class="toggle"><input type="checkbox" checked onchange="document.getElementById('catsSection').style.display=this.checked?'':'none'"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><h4>Show Hero Stats</h4><p>Numbers in hero section</p></div>
+        <label class="toggle"><input type="checkbox" checked onchange="document.getElementById('heroStats').style.display=this.checked?'flex':'none'"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+    <div class="admin-section-card">
+      <div class="admin-section-title">Saved Data</div>
+      <p style="color:rgba(255,255,255,.4);font-size:.82rem;margin-bottom:1rem;font-family:var(--font-body);">
+        Aapka store data browser mein automatically save hota hai. Sab kuch — products, images, settings, branding — refresh ke baad bhi waise ka waisa rehta hai.
+      </p>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;">
+        <button class="btn-submit" onclick="manualSave()">💾 Save Now</button>
+        <button class="btn-cancel" onclick="showStorageInfo()">📊 Storage Info</button>
+        <button class="btn-danger" onclick="resetAllData()">⚠️ Reset All Data</button>
+      </div>
+      <div id="storageInfoBox" style="display:none;margin-top:1rem;background:rgba(255,255,255,.04);border-radius:10px;padding:1rem;font-size:.8rem;color:rgba(255,255,255,.5);font-family:var(--font-body);line-height:1.8;"></div>
+    </div>
+  </div>
+
+</main>
+</div>
+</div><!-- end adminApp -->
+
+<script>
+/* ============================================================
+   DATA
+============================================================ */
+const bgColors=['#FDE8EE','#FDF3E7','#E8F0FE','#E8F5E9','#F3E5F5','#FCE4EC','#EDE9FE','#FEF3C7','#FFEDD5','#D1FAE5'];
+let selectedBg='#FDE8EE';
+let editingId=null;
+let activeFilter='All';
+let cart=[];
+let lbImages=[];let lbIdx=0;
+let tempImages=[];
+
+// Emoji library for category picker
+const EMOJI_LIST=[
+  '💄','👄','💋','👁️','✨','🌹','🌸','🌺','💅','🧴','🧖','💆','🪄','🎨','🖌️',
+  '👜','💍','💎','👑','🎀','🌟','⭐','💫','🔆','🌈','🦋','🌷','🌻','🌼','🍀',
+  '🧿','🪷','💝','❤️','🩷','💗','💖','🛍️','🎁','🎊','🪞','🧼','🫧','🌙','☀️',
+  '🍓','🍒','🍑','🫐','🌿','🍃','🪻','🌾','🔮','💠','🪅','🎭','🎪','🦚','🦜',
+  '🧁','🍰','🎂','🍫','🍬','🍭','🫀','🩺','💊','🧬','🔬','🧪','⚗️','🪬','🫶',
+  '👶','🤱','👗','👙','🩱','👠','👡','👒','🧢','🪮','🧣','🧤','🧦','🩴','👝',
+];
+
+const HERO_GRADIENTS={
+  'dark-rose':'linear-gradient(135deg,#2A1A1F 0%,#4A1528 45%,#7A2040 100%)',
+  'dark-purple':'linear-gradient(135deg,#1A0F2E 0%,#3B1A6B 45%,#5B21B6 100%)',
+  'dark-navy':'linear-gradient(135deg,#0F172A 0%,#1E3A8A 45%,#1D4ED8 100%)',
+  'dark-green':'linear-gradient(135deg,#064E3B 0%,#065F46 45%,#10B981 100%)',
+  'dark-charcoal':'linear-gradient(135deg,#111827 0%,#1F2937 45%,#374151 100%)',
+};
+
+const DISPLAY_FONTS=[
+  {name:'Playfair Display',import:'Playfair+Display:ital,wght@0,400;0,600;0,700;1,400',stack:"'Playfair Display',serif"},
+  {name:'Cormorant Garamond',import:'Cormorant+Garamond:ital,wght@0,400;0,600;1,400',stack:"'Cormorant Garamond',serif"},
+  {name:'Libre Baskerville',import:'Libre+Baskerville:ital,wght@0,400;0,700;1,400',stack:"'Libre Baskerville',serif"},
+  {name:'Lora',import:'Lora:ital,wght@0,400;0,600;1,400',stack:"'Lora',serif"},
+  {name:'DM Serif Display',import:'DM+Serif+Display:ital@0;1',stack:"'DM Serif Display',serif"},
+  {name:'Abril Fatface',import:'Abril+Fatface',stack:"'Abril Fatface',cursive"},
+  {name:'Cinzel',import:'Cinzel:wght@400;600',stack:"'Cinzel',serif"},
+  {name:'Josefin Sans',import:'Josefin+Sans:wght@300;400;600',stack:"'Josefin Sans',sans-serif"},
+];
+const BODY_FONTS=[
+  {name:'DM Sans',import:'DM+Sans:wght@300;400;500;600',stack:"'DM Sans',sans-serif"},
+  {name:'Nunito',import:'Nunito:wght@300;400;600',stack:"'Nunito',sans-serif"},
+  {name:'Poppins',import:'Poppins:wght@300;400;500;600',stack:"'Poppins',sans-serif"},
+  {name:'Outfit',import:'Outfit:wght@300;400;500;600',stack:"'Outfit',sans-serif"},
+  {name:'Raleway',import:'Raleway:wght@300;400;500;600',stack:"'Raleway',sans-serif"},
+  {name:'Quicksand',import:'Quicksand:wght@400;500;600',stack:"'Quicksand',sans-serif"},
+  {name:'Work Sans',import:'Work+Sans:wght@300;400;500;600',stack:"'Work Sans',sans-serif"},
+  {name:'Jost',import:'Jost:wght@300;400;500;600',stack:"'Jost',sans-serif"},
+];
+
+let SD={
+  brandName1:'Mishi',brandName2:' Khan',logoURL:'',
+  themeColor:'#E8325A',themeDark:'#B01E3E',themeLight:'#FDE8EE',
+  displayFont:DISPLAY_FONTS[0],bodyFont:BODY_FONTS[0],
+  heroSlider:{images:[],speed:5,autoPlay:true,transition:'fade',overlay:0.45,currentIdx:0},
+  hero:{eyebrow:'Premium Beauty Collection',line1:'Unleash Your',line2:'Inner Glow',tagline:"Discover luxury makeup that celebrates your unique beauty — from bold lips to flawless skin."},
+  heroStats:[{n:'200+',l:'Products'},{n:'50K+',l:'Happy Clients'},{n:'4.9★',l:'Rating'}],
+  footer:{brand1:'Mishi',brand2:' Khan',desc:"Pakistan's premium beauty destination. Bringing luxury makeup to every doorstep with love.",col1Title:'Quick Links',col1:[{t:'Shop All'},{t:'New Arrivals'},{t:'Sale'},{t:'Best Sellers'}],col2Title:'Help',col2:[{t:'Track Order'},{t:'Returns'},{t:'Contact Us'},{t:'FAQs'}],copyright:'© 2025 Mishi Khan. All rights reserved. Made with ❤️ in Pakistan.'},
+  wa:{number:'',ownerName:'Mishi Khan',template:'🛍️ *New Order from {storeName}*\n\n{orderItems}\n\n💰 *Total: {total}*\n\n📦 Please confirm my order. Shukriya! 🌸',enabled:true},
+  categories:[{name:'Lips',emoji:'💄'},{name:'Eyes',emoji:'👁️'},{name:'Face',emoji:'✨'},{name:'Skincare',emoji:'🌹'},{name:'Brushes',emoji:'🖌️'},{name:'Fragrance',emoji:'🌸'}],
+  products:[
+    {id:1,name:'Ruby Velvet Lipstick',brand:'MAC',cat:'Lips',emoji:'💄',price:2800,oldPrice:3500,stock:45,badge:'sale',bg:'#FDE8EE',desc:'Long-lasting matte formula',rating:4.8,reviews:234,images:[]},
+    {id:2,name:'Glam Eye Palette',brand:'Urban Decay',cat:'Eyes',emoji:'🎨',price:5500,oldPrice:null,stock:28,badge:'new',bg:'#F3E5F5',desc:'12 pigmented shades',rating:4.9,reviews:189,images:[]},
+    {id:3,name:'Dewy Glow Foundation',brand:'Fenty Beauty',cat:'Face',emoji:'🌟',price:4200,oldPrice:5000,stock:60,badge:'',bg:'#FDF3E7',desc:'SPF 30 light coverage',rating:4.7,reviews:412,images:[]},
+    {id:4,name:'Volume Lash Mascara',brand:"L'Oreal",cat:'Eyes',emoji:'👁️',price:1800,oldPrice:null,stock:80,badge:'hot',bg:'#E8F0FE',desc:'360° brush for full lashes',rating:4.6,reviews:567,images:[]},
+    {id:5,name:'Rose Petal Highlighter',brand:'NARS',cat:'Face',emoji:'✨',price:3600,oldPrice:4200,stock:35,badge:'sale',bg:'#FCE4EC',desc:'Buildable luminous glow',rating:4.9,reviews:298,images:[]},
+    {id:6,name:'Hydra Plump Lip Gloss',brand:'Charlotte Tilbury',cat:'Lips',emoji:'👄',price:3200,oldPrice:null,stock:55,badge:'new',bg:'#FDE8EE',desc:'Plumping hyaluronic formula',rating:4.8,reviews:176,images:[]},
+    {id:7,name:'Vitamin C Serum',brand:'The Ordinary',cat:'Skincare',emoji:'🧴',price:2400,oldPrice:2900,stock:90,badge:'',bg:'#E8F5E9',desc:'Brightening daily serum',rating:4.7,reviews:892,images:[]},
+    {id:8,name:'Pro Contour Kit',brand:'NYX',cat:'Face',emoji:'🎨',price:2200,oldPrice:null,stock:40,badge:'',bg:'#FDF3E7',desc:'Sculpt & define effortlessly',rating:4.5,reviews:143,images:[]},
+  ],
+  nextId:9,orders:[]
+};
+
+/* ============================================================
+   LOCALSTORAGE — SAVE & LOAD
+============================================================ */
+const STORE_KEY='mishikhan_store_v1';
+
+function saveData(){
+  try{
+    // Font objects ko index mein convert karo — localStorage string store karta hai
+    const toSave={
+      ...SD,
+      displayFont: DISPLAY_FONTS.findIndex(f=>f.name===SD.displayFont.name),
+      bodyFont:    BODY_FONTS.findIndex(f=>f.name===SD.bodyFont.name),
+    };
+    localStorage.setItem(STORE_KEY, JSON.stringify(toSave));
+  } catch(e){
+    // Storage full ho to (images wajah se) — bina images ke save karo
+    try{
+      const toSave={
+        ...SD,
+        displayFont: DISPLAY_FONTS.findIndex(f=>f.name===SD.displayFont.name),
+        bodyFont:    BODY_FONTS.findIndex(f=>f.name===SD.bodyFont.name),
+        heroSlider:  {...SD.heroSlider, images:[]},  // images hata do
+        products:    SD.products.map(p=>({...p,images:[]})),
+        logoURL:     '',
+      };
+      localStorage.setItem(STORE_KEY, JSON.stringify(toSave));
+      console.warn('Storage limit reached — images not saved (text data saved ok)');
+    } catch(e2){ console.error('Save failed:', e2); }
+  }
+}
+
+function loadData(){
+  try{
+    const raw=localStorage.getItem(STORE_KEY);
+    if(!raw) return; // pehli baar — defaults use karo
+    const saved=JSON.parse(raw);
+    // Font index wapas object mein
+    const dfi = typeof saved.displayFont==='number' ? saved.displayFont : 0;
+    const bfi = typeof saved.bodyFont==='number'    ? saved.bodyFont    : 0;
+    saved.displayFont = DISPLAY_FONTS[dfi] || DISPLAY_FONTS[0];
+    saved.bodyFont    = BODY_FONTS[bfi]    || BODY_FONTS[0];
+    // heroSlider currentIdx reset (fresh start)
+    if(saved.heroSlider) saved.heroSlider.currentIdx=0;
+    // Deep merge — saved data ko SD ke upar lagao
+    Object.assign(SD, saved);
+  } catch(e){ console.warn('Could not load saved data:', e); }
+}
+
+// Auto-save: jab bhi koi cheez badli, 800ms baad save ho
+let _saveTimer=null;
+function scheduleSave(){
+  clearTimeout(_saveTimer);
+  _saveTimer=setTimeout(saveData, 800);
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+function init(){
+  loadData(); // ← pehle saved data load karo
+  setInterval(()=>{document.getElementById('adminDT').textContent=new Date().toLocaleDateString('en-PK',{weekday:'short',day:'numeric',month:'short'});},1000);
+  renderBgSwatches();renderFontGrids();renderCatSelector();
+  renderCategories();renderFilterBar();renderProducts(SD.products);
+  applyBranding();renderFooter();renderFooterEditor();
+  renderWAPreview();updateDashboard();renderEmojiPicker();
+  initProductDragDrop();
+  initHeroSlider();
+  restoreHeroContent();
+  showSaveIndicator();
+}
+
+function restoreHeroContent(){
+  // Hero text
+  const h=SD.hero;
+  document.getElementById('heroEyebrow').textContent=h.eyebrow;
+  document.getElementById('heroHeading').innerHTML=h.line1+'<br><em>'+h.line2+'</em>';
+  document.getElementById('heroTagline').textContent=h.tagline;
+  // Hero stats
+  const statsEl=document.getElementById('heroStats');
+  if(SD.heroStats&&SD.heroStats.length){
+    statsEl.innerHTML=SD.heroStats.map(s=>`<div><div class="stat-num">${s.n}</div><div class="stat-label">${s.l}</div></div>`).join('');
+  }
+}
+
+/* ============================================================
+   HERO BACKGROUND SLIDER
+============================================================ */
+let heroSliderTimer=null;
+let heroTimerAnim=null;
+
+function initHeroSlider(){
+  renderHeroBgSlides();
+  if(SD.heroSlider.autoPlay && SD.heroSlider.images.length>1) startHeroAutoPlay();
+}
+
+function renderHeroBgSlides(){
+  const hs=SD.heroSlider;
+  const container=document.getElementById('heroBgSlides');
+  const dots=document.getElementById('heroSliderDots');
+  const prev=document.getElementById('heroSlidePrev');
+  const next=document.getElementById('heroSlideNext');
+  const overlay=document.getElementById('heroBgOverlay');
+
+  // Update overlay darkness
+  overlay.style.background='rgba(0,0,0,'+hs.overlay+')';
+
+  if(!hs.images||hs.images.length===0){
+    container.innerHTML='';
+    dots.innerHTML='';
+    prev.style.display='none';
+    next.style.display='none';
+    document.getElementById('heroTimerBar').style.display='none';
+    return;
+  }
+
+  // Build slides
+  container.innerHTML=hs.images.map((src,i)=>`
+    <div class="hero-bg-slide${i===hs.currentIdx?' active':''}" data-si="${i}"
+      style="background-image:url('${src}');"></div>`).join('');
+
+  // Dots
+  dots.innerHTML=hs.images.map((_,i)=>
+    `<button class="hero-slider-dot${i===hs.currentIdx?' active':''}" onclick="heroGoTo(${i})"></button>`
+  ).join('');
+
+  // Arrows only if multiple images
+  const multi=hs.images.length>1;
+  prev.style.display=multi?'flex':'none';
+  next.style.display=multi?'flex':'none';
+  document.getElementById('heroTimerBar').style.display=multi&&hs.autoPlay?'block':'none';
+}
+
+function heroGoTo(idx){
+  const hs=SD.heroSlider;
+  const slides=document.querySelectorAll('.hero-bg-slide');
+  const dotEls=document.querySelectorAll('.hero-slider-dot');
+  if(!slides.length)return;
+  // Fade out current
+  slides[hs.currentIdx].classList.remove('active');
+  dotEls[hs.currentIdx]&&dotEls[hs.currentIdx].classList.remove('active');
+  hs.currentIdx=(idx+hs.images.length)%hs.images.length;
+  // Fade in next
+  slides[hs.currentIdx].classList.add('active');
+  dotEls[hs.currentIdx]&&dotEls[hs.currentIdx].classList.add('active');
+  // Reset timer bar
+  resetTimerBar();
+}
+
+function heroSlideMove(dir){
+  stopHeroAutoPlay();
+  heroGoTo(SD.heroSlider.currentIdx+dir);
+  if(SD.heroSlider.autoPlay) startHeroAutoPlay();
+}
+
+function startHeroAutoPlay(){
+  stopHeroAutoPlay();
+  if(SD.heroSlider.images.length<2)return;
+  const ms=SD.heroSlider.speed*1000;
+  animateTimerBar(ms);
+  heroSliderTimer=setInterval(()=>{
+    heroGoTo(SD.heroSlider.currentIdx+1);
+    animateTimerBar(ms);
+  },ms);
+}
+
+function stopHeroAutoPlay(){
+  if(heroSliderTimer){clearInterval(heroSliderTimer);heroSliderTimer=null;}
+  if(heroTimerAnim){cancelAnimationFrame(heroTimerAnim);heroTimerAnim=null;}
+}
+
+function resetTimerBar(){
+  const bar=document.getElementById('heroTimerBar');
+  if(bar){bar.style.transition='none';bar.style.width='0%';}
+}
+
+function animateTimerBar(totalMs){
+  const bar=document.getElementById('heroTimerBar');
+  if(!bar||!SD.heroSlider.autoPlay)return;
+  bar.style.transition='none';bar.style.width='0%';
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      bar.style.transition='width '+totalMs+'ms linear';
+      bar.style.width='100%';
+    });
+  });
+}
+
+/* Admin upload handlers */
+function handleHeroImgUpload(inp){
+  const files=Array.from(inp.files);
+  const max=10-SD.heroSlider.images.length;
+  const toLoad=files.slice(0,max);
+  let loaded=0;
+  toLoad.forEach(file=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      SD.heroSlider.images.push(e.target.result);
+      loaded++;
+      if(loaded===toLoad.length){
+        renderHeroImgAdminGrid();
+        renderHeroBgSlides();
+        if(SD.heroSlider.autoPlay&&SD.heroSlider.images.length>1) startHeroAutoPlay();
+        autoSave();showToast('✅ '+toLoad.length+' image(s) added to hero!');
+      }
+    };
+    r.readAsDataURL(file);
+  });
+  inp.value='';
+}
+
+function renderHeroImgAdminGrid(){
+  const grid=document.getElementById('heroImgGrid');
+  if(!grid)return;
+  let html=SD.heroSlider.images.map((src,i)=>`
+    <div class="hero-img-thumb${i===0?' main-img':''}" draggable="true" data-hi="${i}">
+      <img src="${src}" alt="hero ${i+1}">
+      <button class="hero-img-rm" onclick="removeHeroImg(${i});event.stopPropagation()">✕</button>
+    </div>`).join('');
+  if(SD.heroSlider.images.length<10){
+    html+=`<div class="hero-img-add">
+      <input type="file" accept="image/*" multiple onchange="handleHeroImgUpload(this)">
+      <div style="font-size:1.6rem;">🖼️</div><div>Add</div>
+    </div>`;
+  }
+  grid.innerHTML=html;
+  // Drag-drop reorder
+  let dSrc=null;
+  grid.querySelectorAll('.hero-img-thumb').forEach(el=>{
+    el.ondragstart=e=>{dSrc=el;el.classList.add('dragging');e.dataTransfer.effectAllowed='move';};
+    el.ondragend=()=>{dSrc&&dSrc.classList.remove('dragging');grid.querySelectorAll('.hero-img-thumb').forEach(x=>x.classList.remove('drag-over'));};
+    el.ondragover=e=>{e.preventDefault();if(el!==dSrc)el.classList.add('drag-over');};
+    el.ondragleave=()=>el.classList.remove('drag-over');
+    el.ondrop=e=>{
+      e.preventDefault();el.classList.remove('drag-over');if(!dSrc||dSrc===el)return;
+      const from=parseInt(dSrc.dataset.hi),to=parseInt(el.dataset.hi);
+      const tmp=SD.heroSlider.images.splice(from,1)[0];
+      SD.heroSlider.images.splice(to,0,tmp);
+      SD.heroSlider.currentIdx=0;
+      renderHeroImgAdminGrid();renderHeroBgSlides();
+      showToast('🖼️ Hero image reordered!');
+    };
+  });
+}
+
+function removeHeroImg(i){
+  SD.heroSlider.images.splice(i,1);
+  if(SD.heroSlider.currentIdx>=SD.heroSlider.images.length) SD.heroSlider.currentIdx=0;
+  renderHeroImgAdminGrid();renderHeroBgSlides();
+  if(SD.heroSlider.images.length>1&&SD.heroSlider.autoPlay) startHeroAutoPlay();
+  else stopHeroAutoPlay();
+  autoSave();showToast('Image removed');
+}
+
+function clearHeroImages(){
+  if(!confirm('Remove all hero background images?'))return;
+  SD.heroSlider.images=[];SD.heroSlider.currentIdx=0;
+  stopHeroAutoPlay();
+  renderHeroImgAdminGrid();renderHeroBgSlides();
+  autoSave();showToast('All hero images removed');
+}
+
+function updateSliderSpeed(val){
+  SD.heroSlider.speed=parseInt(val);
+  document.getElementById('sliderSpeedLabel').textContent=val+' second'+(val==1?'':'s');
+  if(SD.heroSlider.autoPlay&&SD.heroSlider.images.length>1) startHeroAutoPlay();
+  scheduleSave();
+}
+
+function toggleAutoPlay(on){
+  SD.heroSlider.autoPlay=on;
+  const bar=document.getElementById('heroTimerBar');
+  if(on){
+    if(SD.heroSlider.images.length>1) startHeroAutoPlay();
+    if(bar) bar.style.display='block';
+  } else {
+    stopHeroAutoPlay();
+    if(bar){bar.style.display='none';bar.style.width='0%';}
+  }
+  scheduleSave();
+}
+
+function setOverlayDarkness(val){
+  SD.heroSlider.overlay=parseFloat(val);
+  document.getElementById('heroBgOverlay').style.background='rgba(0,0,0,'+val+')';
+  scheduleSave();
+}
+
+function saveSliderSettings(){
+  const spd=document.getElementById('sliderSpeedRange');
+  const tr=document.getElementById('sliderTransition');
+  const od=document.getElementById('overlayDarkness');
+  if(spd) SD.heroSlider.speed=parseInt(spd.value);
+  if(tr) SD.heroSlider.transition=tr.value;
+  if(od) SD.heroSlider.overlay=parseFloat(od.value);
+  if(SD.heroSlider.autoPlay&&SD.heroSlider.images.length>1) startHeroAutoPlay();
+  setOverlayDarkness(SD.heroSlider.overlay);
+  autoSave();showToast('✅ Slider settings saved!');
+}
+
+function previewHeroSlider(){
+  closeAdmin();
+  setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),100);
+  showToast('▶️ Hero slider preview — store pe dekho!');
+}
+
+/* ============================================================
+   SAVE INDICATOR
+============================================================ */
+function showSaveIndicator(){
+  // Show a "saved" badge briefly on load if data was restored
+  try{
+    if(localStorage.getItem(STORE_KEY)){
+      const el=document.getElementById('saveIndicator');
+      const icon=document.getElementById('saveIcon');
+      const txt=document.getElementById('saveText');
+      el.style.display='flex';
+      icon.textContent='✅'; txt.textContent='Data restored';
+      setTimeout(()=>{el.style.display='none';},2200);
+    }
+  }catch(e){}
+}
+function flashSaved(){
+  const el=document.getElementById('saveIndicator');
+  const icon=document.getElementById('saveIcon');
+  const txt=document.getElementById('saveText');
+  if(!el)return;
+  el.style.display='flex';
+  icon.textContent='💾'; txt.textContent='Saving...';
+  setTimeout(()=>{ icon.textContent='✅'; txt.textContent='Saved!'; },700);
+  setTimeout(()=>{ el.style.display='none'; },2000);
+}
+// Wrap scheduleSave to also show indicator
+function autoSave(){
+  scheduleSave();
+  flashSaved();
+}
+
+/* ============================================================
+   BRANDING
+============================================================ */
+function applyBranding(){
+  const b1=SD.brandName1,b2=SD.brandName2;
+  document.getElementById('navBrandName').innerHTML=b1+'<span>'+b2+'</span>';
+  document.getElementById('sidebarBrandName').innerHTML=b1+'<span>'+b2+'</span>';
+  document.title=b1+b2+' — Premium Makeup Store';
+  document.getElementById('brandName1').value=b1;
+  document.getElementById('brandName2').value=b2;
+  const letter=(b1||'M').charAt(0).toUpperCase();
+  const ph=document.getElementById('navLogoPH');
+  const sbl=document.getElementById('sidebarLogo');
+  if(ph)ph.textContent=letter;
+  if(sbl){const tn=sbl.childNodes[0];if(tn&&tn.nodeType===3)tn.textContent=letter;}
+  if(SD.logoURL){
+    ['navLogoImg','sidebarLogoImg','logoPreview'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.src=SD.logoURL;el.style.display='block';}
+    });
+    if(ph)ph.style.display='none';
+  } else {
+    if(ph)ph.style.display='flex';
+  }
+  document.documentElement.style.setProperty('--rose',SD.themeColor);
+  document.documentElement.style.setProperty('--rose-dark',SD.themeDark);
+  document.documentElement.style.setProperty('--rose-light',SD.themeLight);
+  document.documentElement.style.setProperty('--font-display',SD.displayFont.stack);
+  document.documentElement.style.setProperty('--font-body',SD.bodyFont.stack);
+}
+function saveBranding(){
+  SD.brandName1=document.getElementById('brandName1').value||'Mishi';
+  SD.brandName2=document.getElementById('brandName2').value||' Khan';
+  applyBranding();autoSave();showToast('✅ Branding saved!');
+}
+function uploadLogo(inp){
+  const f=inp.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{SD.logoURL=e.target.result;applyBranding();autoSave();showToast('✅ Logo uploaded!');};
+  r.readAsDataURL(f);
+}
+function removeLogo(){
+  SD.logoURL='';
+  document.getElementById('navLogoImg').style.display='none';
+  const ph=document.getElementById('navLogoPH'); if(ph)ph.style.display='flex';
+  document.getElementById('sidebarLogoImg').style.display='none';
+  document.getElementById('logoPreview').style.display='none';
+  autoSave();showToast('Logo removed');
+}
+
+/* ============================================================
+   THEME & FONTS
+============================================================ */
+function setTheme(el,c,light,dark){
+  document.querySelectorAll('#themeSwatches .swatch').forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected');
+  SD.themeColor=c;SD.themeLight=light;SD.themeDark=dark;
+  document.documentElement.style.setProperty('--rose',c);
+  document.documentElement.style.setProperty('--rose-dark',dark);
+  document.documentElement.style.setProperty('--rose-light',light);
+  autoSave();showToast('🎨 Theme updated!');
+}
+function setCustomTheme(hex){
+  // Auto-calculate dark and light variants
+  SD.themeColor=hex;
+  SD.themeDark=adjustHex(hex,-40);
+  SD.themeLight=hexToLight(hex);
+  document.documentElement.style.setProperty('--rose',hex);
+  document.documentElement.style.setProperty('--rose-dark',SD.themeDark);
+  document.documentElement.style.setProperty('--rose-light',SD.themeLight);
+  document.querySelectorAll('#themeSwatches .swatch').forEach(s=>s.classList.remove('selected'));
+  autoSave();showToast('🎨 Custom color applied: '+hex);
+}
+function adjustHex(hex,amt){
+  let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  r=Math.max(0,Math.min(255,r+amt));g=Math.max(0,Math.min(255,g+amt));b=Math.max(0,Math.min(255,b+amt));
+  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+function hexToLight(hex){
+  let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  r=Math.round(r+(255-r)*0.85);g=Math.round(g+(255-g)*0.85);b=Math.round(b+(255-b)*0.85);
+  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+
+/* Hero Background */
+function applyHeroGradient(){
+  const style=document.getElementById('heroGradientStyle').value;
+  const customDiv1=document.getElementById('heroCustomColors');
+  const customDiv2=document.getElementById('heroCustomColors2');
+  if(style==='custom'){
+    customDiv1.style.display='';customDiv2.style.display='';
+    const c1=document.getElementById('heroBgColor1').value;
+    const c2=document.getElementById('heroBgColor2').value;
+    document.querySelector('.hero').style.background=`linear-gradient(135deg,${c1} 0%,${adjustHex(c2,-20)} 45%,${c2} 100%)`;
+  } else {
+    customDiv1.style.display='none';customDiv2.style.display='none';
+    document.querySelector('.hero').style.background=HERO_GRADIENTS[style]||HERO_GRADIENTS['dark-rose'];
+  }
+  highlightHeroBgPreset(style);
+}
+function setHeroBgPreset(el,style){
+  document.getElementById('heroGradientStyle').value=style;
+  applyHeroGradient();
+}
+function highlightHeroBgPreset(style){
+  const styles=['dark-rose','dark-purple','dark-navy','dark-green','dark-charcoal'];
+  const presets=document.querySelectorAll('#heroBgPresets div');
+  presets.forEach((el,i)=>el.style.borderColor=styles[i]===style?'var(--rose)':'transparent');
+}
+function renderFontGrids(){
+  const dg=document.getElementById('displayFontGrid');
+  const bg=document.getElementById('bodyFontGrid');
+  dg.innerHTML=DISPLAY_FONTS.map((f,i)=>`
+    <div class="font-option${i===0?' selected':''}" onclick="setDisplayFont(${i},this)" style="font-family:${f.stack}">
+      <div class="font-preview-text" style="font-family:${f.stack}"></div>
+      <div class="font-option-name">${f.name}</div>
+    </div>`).join('');
+  bg.innerHTML=BODY_FONTS.map((f,i)=>`
+    <div class="font-option${i===0?' selected':''}" onclick="setBodyFont(${i},this)" style="font-family:${f.stack}">
+      <div class="font-preview-text" style="font-family:${f.stack};font-size:1rem;">Aa Bb Cc</div>
+      <div class="font-option-name">${f.name}</div>
+    </div>`).join('');
+  loadFonts();
+}
+function loadFonts(){
+  const all=[...DISPLAY_FONTS,...BODY_FONTS];
+  const imports=all.map(f=>`family=${f.import}`).join('&');
+  document.getElementById('googleFontLink').href=`https://fonts.googleapis.com/css2?${imports}&display=swap`;
+}
+function setDisplayFont(i,el){
+  document.querySelectorAll('#displayFontGrid .font-option').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+  SD.displayFont=DISPLAY_FONTS[i];
+  document.documentElement.style.setProperty('--font-display',SD.displayFont.stack);
+  autoSave();showToast('🔤 Heading font changed to '+SD.displayFont.name);
+}
+function setBodyFont(i,el){
+  document.querySelectorAll('#bodyFontGrid .font-option').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+  SD.bodyFont=BODY_FONTS[i];
+  document.documentElement.style.setProperty('--font-body',SD.bodyFont.stack);
+  autoSave();showToast('🔤 Body font changed to '+SD.bodyFont.name);
+}
+function setFontSize(v){
+  document.documentElement.style.fontSize=v;
+  showToast('📐 Font size set to '+v);
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+function saveHero(){
+  const h=SD.hero;
+  h.eyebrow=document.getElementById('heroEyebrowInp').value;
+  h.line1=document.getElementById('heroLine1').value;
+  h.line2=document.getElementById('heroLine2').value;
+  h.tagline=document.getElementById('heroTaglineInp').value;
+  document.getElementById('heroEyebrow').textContent=h.eyebrow;
+  document.getElementById('heroHeading').innerHTML=h.line1+'<br><em>'+h.line2+'</em>';
+  document.getElementById('heroTagline').textContent=h.tagline;
+  autoSave();showToast('✅ Hero updated!');
+}
+function saveHeroStats(){
+  SD.heroStats=[{n:document.getElementById('s1n').value,l:document.getElementById('s1l').value},{n:document.getElementById('s2n').value,l:document.getElementById('s2l').value},{n:document.getElementById('s3n').value,l:document.getElementById('s3l').value}];
+  document.getElementById('heroStats').innerHTML=SD.heroStats.map(s=>`<div><div class="stat-num">${s.n}</div><div class="stat-label">${s.l}</div></div>`).join('');
+  autoSave();showToast('✅ Stats updated!');
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+function renderFooter(){
+  const f=SD.footer;
+  document.getElementById('footerBrandName').innerHTML=f.brand1+'<span>'+f.brand2+'</span>';
+  document.getElementById('footerDesc').textContent=f.desc;
+  document.getElementById('footerCol1Title').textContent=f.col1Title;
+  document.getElementById('footerCol2Title').textContent=f.col2Title;
+  document.getElementById('footerCol1Links').innerHTML=f.col1.map(l=>`<a>${l.t}</a>`).join('');
+  document.getElementById('footerCol2Links').innerHTML=f.col2.map(l=>`<a>${l.t}</a>`).join('');
+  document.getElementById('footerCopyright').textContent=f.copyright;
+}
+function renderFooterEditor(){
+  const f=SD.footer;
+  document.getElementById('fc1title').value=f.col1Title;
+  document.getElementById('fc2title').value=f.col2Title;
+  document.getElementById('fDesc').value=f.desc;
+  document.getElementById('fCopy').value=f.copyright;
+  renderFLinkList(1,f.col1);renderFLinkList(2,f.col2);
+}
+function renderFLinkList(col,links){
+  document.getElementById('fc'+col).innerHTML=links.map((l,i)=>`
+    <div class="fl-item">
+      <input class="fl-inp" value="${l.t}" oninput="SD.footer.col${col}[${i}].t=this.value">
+      <button class="btn-rm-lnk" onclick="removeFLink(${col},${i})">✕</button>
+    </div>`).join('');
+}
+function addFLink(col){SD.footer['col'+col].push({t:'New Link'});renderFLinkList(col,SD.footer['col'+col]);}
+function removeFLink(col,i){SD.footer['col'+col].splice(i,1);renderFLinkList(col,SD.footer['col'+col]);}
+function saveFooterBrand(){
+  SD.footer.brand1=document.getElementById('fBrand1').value;
+  SD.footer.brand2=document.getElementById('fBrand2').value;
+  SD.footer.desc=document.getElementById('fDesc').value;
+  renderFooter();autoSave();showToast('✅ Footer brand saved!');
+}
+function saveFooterLinks(){
+  SD.footer.col1Title=document.getElementById('fc1title').value;
+  SD.footer.col2Title=document.getElementById('fc2title').value;
+  renderFooter();autoSave();showToast('✅ Footer links saved!');
+}
+function saveCopyright(){
+  SD.footer.copyright=document.getElementById('fCopy').value;
+  renderFooter();autoSave();showToast('✅ Copyright updated!');
+}
+
+/* ============================================================
+   WHATSAPP
+============================================================ */
+function renderWAPreview(){
+  const num=document.getElementById('waNumber')?document.getElementById('waNumber').value:'';
+  const tmpl=document.getElementById('waMsgTemplate')?document.getElementById('waMsgTemplate').value:SD.wa.template;
+  const owner=document.getElementById('waOwnerName')?document.getElementById('waOwnerName').value||'Mishi Khan':'Mishi Khan';
+  const sampleItems='💄 Ruby Velvet Lipstick x1 — Rs.2,800\n✨ Rose Petal Highlighter x2 — Rs.7,200';
+  let msg=tmpl.replace('{storeName}',owner).replace('{orderItems}',sampleItems).replace('{total}','Rs.10,000');
+  const el=document.getElementById('waPreviewText');
+  if(el) el.innerHTML='<div class="wa-num-display">To: +'+(num||'92XXXXXXXXXX')+'</div><pre style="white-space:pre-wrap;margin-top:.5rem;font-family:inherit;font-size:.82rem;color:rgba(255,255,255,.65);">'+msg+'</pre>';
+}
+function saveWA(){
+  SD.wa.number=document.getElementById('waNumber').value.replace(/[^0-9]/g,'');
+  SD.wa.ownerName=document.getElementById('waOwnerName').value||'Mishi Khan';
+  SD.wa.template=document.getElementById('waMsgTemplate').value;
+  renderWAPreview();autoSave();showToast('✅ WhatsApp settings saved!');
+}
+function testWA(){
+  if(!SD.wa.number){showToast('⚠️ Enter WhatsApp number first!');return;}
+  const msg=encodeURIComponent('🧪 Test message from '+SD.wa.ownerName+' store admin panel!');
+  window.open('https://wa.me/'+SD.wa.number+'?text='+msg,'_blank');
+}
+function whatsappCheckout(){
+  if(!cart.length){showToast('Cart is empty!');return;}
+  if(!SD.wa.number){
+    alert('⚠️ WhatsApp number not set!\n\nGo to Admin Panel → WhatsApp to configure your number.');return;
+  }
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const owner=SD.wa.ownerName||SD.brandName1+SD.brandName2;
+  const tmpl=SD.wa.template||'🛍️ *New Order*\n\n{orderItems}\n\n💰 *Total: {total}*';
+  const items=cart.map(i=>`${i.emoji} *${i.name}* x${i.qty} — Rs.${(i.price*i.qty).toLocaleString()}`).join('\n');
+  let msg=tmpl.replace('{storeName}',owner).replace('{orderItems}',items).replace('{total}','Rs.'+total.toLocaleString());
+  window.open('https://wa.me/'+SD.wa.number+'?text='+encodeURIComponent(msg),'_blank');
+  SD.orders.unshift({id:'ORD'+Date.now(),items:[...cart],total,time:new Date().toLocaleString()});
+  cart=[];updateCart();toggleCart();updateDashboard();
+  showToast('✅ Opening WhatsApp!');
+}
+
+/* ============================================================
+   EMOJI PICKER
+============================================================ */
+function renderEmojiPicker(){
+  const grid=document.getElementById('emojiPickerGrid');
+  if(!grid)return;
+  grid.innerHTML=EMOJI_LIST.map(em=>`
+    <button class="emoji-btn" onclick="selectEmoji('${em}')" title="${em}">${em}</button>
+  `).join('');
+}
+function selectEmoji(em){
+  document.getElementById('catEmoji').value=em;
+  document.querySelectorAll('.emoji-btn').forEach(b=>b.classList.remove('selected'));
+  const btns=[...document.querySelectorAll('.emoji-btn')];
+  const hit=btns.find(b=>b.textContent===em);
+  if(hit)hit.classList.add('selected');
+}
+
+/* ============================================================
+   CATEGORIES
+============================================================ */
+function renderCategories(){
+  document.getElementById('catGrid').innerHTML=SD.categories.map(c=>`
+    <div class="cat-card" onclick="filterByCat('${c.name}')">
+      <span class="cat-icon">${c.emoji}</span>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${SD.products.filter(p=>p.cat===c.name).length} items</div>
+    </div>`).join('');
+  const cl=document.getElementById('categoryList');
+  if(!cl)return;
+  cl.innerHTML=SD.categories.map((c,i)=>`
+    <div class="fl-item" draggable="true" data-ci="${i}" style="cursor:grab;">
+      <span style="color:rgba(255,255,255,.25);font-size:.9rem;margin-right:4px;user-select:none;">⠿</span>
+      <span style="font-size:1.2rem;width:28px;text-align:center;">${c.emoji}</span>
+      <input class="fl-inp" value="${c.name}" oninput="SD.categories[${i}].name=this.value;renderFilterBar();renderCatSelector();">
+      <button class="btn-rm-lnk" onclick="deleteCat(${i})">✕</button>
+    </div>`).join('');
+  let dragSrc=null;
+  cl.querySelectorAll('.fl-item').forEach(item=>{
+    item.ondragstart=e=>{dragSrc=item;item.classList.add('dragging');e.dataTransfer.effectAllowed='move';};
+    item.ondragend=()=>{dragSrc&&dragSrc.classList.remove('dragging');cl.querySelectorAll('.fl-item').forEach(x=>x.classList.remove('drag-over'));};
+    item.ondragover=e=>{e.preventDefault();if(item!==dragSrc)item.classList.add('drag-over');};
+    item.ondragleave=()=>item.classList.remove('drag-over');
+    item.ondrop=e=>{
+      e.preventDefault();item.classList.remove('drag-over');if(dragSrc===item)return;
+      const from=parseInt(dragSrc.dataset.ci),to=parseInt(item.dataset.ci);
+      const tmp=SD.categories.splice(from,1)[0];SD.categories.splice(to,0,tmp);
+      renderCategories();renderFilterBar();renderCatSelector();autoSave();showToast('🔄 Category reordered!');
+    };
+  });
+}
+function addCategory(){
+  const nm=document.getElementById('catName').value.trim();
+  const em=document.getElementById('catEmoji').value.trim()||'🏷️';
+  if(!nm){showToast('⚠️ Enter category name');return;}
+  SD.categories.push({name:nm,emoji:em});
+  document.getElementById('catName').value='';document.getElementById('catEmoji').value='';
+  renderCategories();renderFilterBar();renderCatSelector();autoSave();showToast('✅ Category added!');
+}
+function deleteCat(i){
+  SD.categories.splice(i,1);renderCategories();renderFilterBar();renderCatSelector();autoSave();showToast('Category removed');
+}
+function renderCatSelector(){
+  const el=document.getElementById('pCat');if(!el)return;
+  el.innerHTML=SD.categories.map(c=>`<option value="${c.name}">${c.emoji} ${c.name}</option>`).join('');
+}
+
+/* ============================================================
+   PRODUCTS
+============================================================ */
+function renderFilterBar(){
+  document.getElementById('filterBar').innerHTML=
+    [['All','🔮'],...SD.categories.map(c=>[c.name,c.emoji])].map(([n,e])=>
+      `<button class="filter-btn${activeFilter===n?' active':''}" onclick="setFilter(this,'${n}')">${e} ${n}</button>`
+    ).join('');
+}
+function setFilter(btn,cat){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');activeFilter=cat;
+  renderProducts(cat==='All'?SD.products:SD.products.filter(p=>p.cat===cat));
+}
+function filterByCat(cat){
+  activeFilter=cat;renderFilterBar();
+  renderProducts(SD.products.filter(p=>p.cat===cat));
+  document.getElementById('shopSection').scrollIntoView({behavior:'smooth'});
+}
+function searchProducts(q){
+  const f=SD.products.filter(p=>p.name.toLowerCase().includes(q.toLowerCase())||p.brand.toLowerCase().includes(q.toLowerCase())||p.cat.toLowerCase().includes(q.toLowerCase()));
+  renderProducts(f);
+}
+
+function renderProducts(list){
+  const grid=document.getElementById('productsGrid');
+  if(!list.length){grid.innerHTML='<p style="color:var(--text2);text-align:center;grid-column:1/-1;padding:3rem 1rem;">No products found 🔍</p>';return;}
+  grid.innerHTML=list.map((p,i)=>buildProductCard(p,i)).join('');
+}
+
+/* Stub — drag-drop is admin-only via renderProductsTable */
+function initProductDragDrop(){}
+
+function buildProductCard(p,i){
+  const imgs=p.images&&p.images.length>0?p.images:[];
+  const hasImgs=imgs.length>0;
+  const multiDots=imgs.length>1?imgs.map((_,di)=>`<div class="p-dot${di===0?' active':''}" onclick="slideToIdx(${p.id},${di},event)"></div>`).join(''):'';
+  const countPill=imgs.length>1?`<div class="img-count-pill" onclick="openLB(${p.id},0,event)">🔍 ${imgs.length} photos</div>`:'';
+  const prevNext=imgs.length>1?`
+    <button class="p-prev" onclick="slideCard(${p.id},-1,event)">‹</button>
+    <button class="p-next" onclick="slideCard(${p.id},1,event)">›</button>`:'';
+
+  let slidesHTML='';
+  if(hasImgs){
+    slidesHTML=imgs.map(src=>`
+      <div class="p-slide" style="background:${p.bg};" onclick="openLB(${p.id},0,event)">
+        <img src="${src}" alt="${p.name}" loading="lazy">
+      </div>`).join('');
+  } else {
+    slidesHTML=`<div class="p-slide" style="background:${p.bg};cursor:pointer;" onclick="openLB(${p.id},0,event)">
+      <span class="emoji-fallback">${p.emoji}</span>
+    </div>`;
+  }
+
+  return `<div class="product-card" style="animation-delay:${i*0.04}s" data-id="${p.id}">
+    <div class="p-slider">
+      <div class="p-slides" id="slides-${p.id}" style="transform:translateX(0)">${slidesHTML}</div>
+      ${p.badge?`<div class="p-badge badge-${p.badge}">${p.badge.toUpperCase()}</div>`:''}
+      <button class="wishlist-btn" onclick="showToast('Added to Wishlist ❤️');event.stopPropagation()">🤍</button>
+      ${prevNext}
+      ${imgs.length>1?`<div class="p-dots">${multiDots}</div>`:''}
+      ${countPill}
+    </div>
+    <div class="product-info">
+      <div class="product-brand">${p.brand}</div>
+      <div class="product-name">${p.name}</div>
+      <div style="margin-bottom:.5rem;">
+        <span class="stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))}</span>
+        <span class="rating-count">(${p.reviews})</span>
+      </div>
+      <div class="product-footer">
+        <div class="product-price">Rs.${p.price.toLocaleString()}${p.oldPrice?`<span class="price-old">Rs.${p.oldPrice.toLocaleString()}</span>`:''}</div>
+        <button class="add-btn" onclick="addToCart(${p.id})">+</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* Card-level slider */
+const cardSlideIdx={};
+function slideCard(pid,dir,e){
+  e&&e.stopPropagation();
+  const p=SD.products.find(x=>x.id===pid);if(!p||!p.images||p.images.length<2)return;
+  const n=p.images.length;
+  if(!cardSlideIdx[pid])cardSlideIdx[pid]=0;
+  cardSlideIdx[pid]=(cardSlideIdx[pid]+dir+n)%n;
+  const wrap=document.getElementById('slides-'+pid);
+  if(wrap) wrap.style.transform=`translateX(-${cardSlideIdx[pid]*100}%)`;
+  const dots=document.querySelectorAll(`[data-id="${pid}"] .p-dot`);
+  dots.forEach((d,i)=>d.classList.toggle('active',i===cardSlideIdx[pid]));
+}
+function slideToIdx(pid,idx,e){
+  e&&e.stopPropagation();
+  const p=SD.products.find(x=>x.id===pid);if(!p)return;
+  cardSlideIdx[pid]=idx;
+  const wrap=document.getElementById('slides-'+pid);
+  if(wrap) wrap.style.transform=`translateX(-${idx*100}%)`;
+  const dots=document.querySelectorAll(`[data-id="${pid}"] .p-dot`);
+  dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+}
+
+/* LIGHTBOX */
+function openLB(pid,startIdx,e){
+  e&&e.stopPropagation();
+  const p=SD.products.find(x=>x.id===pid);if(!p)return;
+  lbImages=p.images&&p.images.length>0?p.images:[null];
+  lbIdx=startIdx||0;
+  renderLB();
+  document.getElementById('lightbox').classList.add('open');
+}
+function renderLB(){
+  const wrap=document.getElementById('lbImgWrap');
+  const p_ref_emoji=lbImages[0]===null?'💄':'';
+  if(lbImages[lbIdx]){
+    wrap.innerHTML=`<img src="${lbImages[lbIdx]}" alt="Product">`;
+  } else {
+    // find product emoji
+    const prd=SD.products.find(p=>JSON.stringify(p.images)===JSON.stringify(lbImages)||(!p.images||!p.images.length));
+    wrap.innerHTML=`<div class="lb-emoji">${prd?prd.emoji:'💄'}</div>`;
+  }
+  const dots=document.getElementById('lbDots');
+  dots.innerHTML=lbImages.map((_,i)=>`<div class="lb-dot${i===lbIdx?' active':''}" onclick="lbJump(${i})"></div>`).join('');
+}
+function lbMove(dir){lbIdx=(lbIdx+dir+lbImages.length)%lbImages.length;renderLB();}
+function lbJump(i){lbIdx=i;renderLB();}
+function closeLB(){document.getElementById('lightbox').classList.remove('open');}
+document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLB();});
+
+/* IMAGE UPLOAD FOR PRODUCT FORM */
+function handleImgUpload(inp){
+  const files=Array.from(inp.files);
+  const maxSlots=8-tempImages.length;
+  const toLoad=files.slice(0,maxSlots);
+  let loaded=0;
+  toLoad.forEach(file=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      tempImages.push(e.target.result);
+      loaded++;
+      if(loaded===toLoad.length) renderImgUploadGrid();
+    };
+    r.readAsDataURL(file);
+  });
+  inp.value='';
+}
+function renderImgUploadGrid(){
+  const grid=document.getElementById('imgUploadGrid');
+  let html=tempImages.map((src,i)=>`
+    <div class="img-thumb-wrap" draggable="true" data-ii="${i}" title="Drag to reorder · First image = main">
+      <img src="${src}" alt="img ${i+1}">
+      <button class="img-thumb-rm" onclick="removeImg(${i});event.stopPropagation()">✕</button>
+      ${i===0?'<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(232,50,90,.8);color:white;font-size:9px;text-align:center;padding:2px;font-family:sans-serif;">MAIN</div>':''}
+    </div>`).join('');
+  if(tempImages.length<8){
+    html+=`<div class="img-upload-new">
+      <input type="file" accept="image/*" multiple onchange="handleImgUpload(this)">
+      <div style="font-size:1.5rem;">📷</div><div>Add</div>
+    </div>`;
+  }
+  grid.innerHTML=html;
+  // Drag-drop to reorder images
+  let dragImgSrc=null;
+  grid.querySelectorAll('.img-thumb-wrap').forEach(el=>{
+    el.ondragstart=e=>{dragImgSrc=el;el.classList.add('dragging');e.dataTransfer.effectAllowed='move';};
+    el.ondragend=()=>{dragImgSrc&&dragImgSrc.classList.remove('dragging');grid.querySelectorAll('.img-thumb-wrap').forEach(x=>x.classList.remove('drag-over'));};
+    el.ondragover=e=>{e.preventDefault();if(el!==dragImgSrc)el.classList.add('drag-over');};
+    el.ondragleave=()=>el.classList.remove('drag-over');
+    el.ondrop=e=>{
+      e.preventDefault();el.classList.remove('drag-over');if(!dragImgSrc||dragImgSrc===el)return;
+      const from=parseInt(dragImgSrc.dataset.ii),to=parseInt(el.dataset.ii);
+      const tmp=tempImages.splice(from,1)[0];tempImages.splice(to,0,tmp);
+      renderImgUploadGrid();showToast('🖼️ Image reordered! First = main photo.');
+    };
+  });
+}
+function removeImg(i){tempImages.splice(i,1);renderImgUploadGrid();}
+
+/* SUBMIT PRODUCT */
+function renderBgSwatches(){
+  document.getElementById('bgSwatches').innerHTML=bgColors.map(c=>
+    `<div class="swatch${c===selectedBg?' selected':''}" style="background:${c};" onclick="selectBg(this,'${c}')"></div>`
+  ).join('');
+}
+function selectBg(el,c){document.querySelectorAll('#bgSwatches .swatch').forEach(s=>s.classList.remove('selected'));el.classList.add('selected');selectedBg=c;}
+
+function submitProduct(){
+  const name=document.getElementById('pName').value.trim();
+  const brand=document.getElementById('pBrand').value.trim();
+  const price=parseFloat(document.getElementById('pPrice').value);
+  if(!name||!brand||!price){showToast('⚠️ Fill Name, Brand & Price!');return;}
+  const p={
+    id:editingId||SD.nextId++,
+    name,brand,cat:document.getElementById('pCat').value,
+    emoji:document.getElementById('pEmoji').value,
+    price,oldPrice:parseFloat(document.getElementById('pOldPrice').value)||null,
+    stock:parseInt(document.getElementById('pStock').value)||0,
+    badge:document.getElementById('pBadge').value,
+    bg:selectedBg,desc:document.getElementById('pDesc').value,
+    rating:4.5,reviews:0,images:[...tempImages]
+  };
+  if(editingId){
+    const idx=SD.products.findIndex(x=>x.id===editingId);
+    SD.products[idx]=p;editingId=null;
+    document.getElementById('prodSubmitBtn').textContent='+ Add to Store';
+    document.getElementById('addProductTitle').textContent='Add New Product';
+    showToast('✅ Product updated!');
+  } else {
+    SD.products.unshift(p);showToast('✅ '+p.emoji+' '+p.name+' added!');
+  }
+  clearProductForm();
+  renderProducts(activeFilter==='All'?SD.products:SD.products.filter(x=>x.cat===activeFilter));
+  renderCategories();renderProductsTable();updateDashboard();autoSave();
+}
+function clearProductForm(){
+  ['pName','pBrand','pPrice','pOldPrice','pStock','pDesc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pBadge').value='';
+  editingId=null;tempImages=[];renderImgUploadGrid();
+  document.getElementById('prodSubmitBtn').textContent='+ Add to Store';
+  document.getElementById('addProductTitle').textContent='Add New Product';
+}
+
+/* PRODUCTS TABLE (ADMIN) — with drag-drop row reorder */
+function renderProductsTable(){
+  const tbody=document.getElementById('prodTbody');
+  document.getElementById('prodCountLbl').textContent=SD.products.length+' total';
+  tbody.innerHTML=SD.products.map((p,idx)=>`
+    <tr draggable="true" data-pid="${p.id}" data-idx="${idx}" style="cursor:grab;user-select:none;">
+      <td style="padding-left:8px;">
+        <span style="color:rgba(255,255,255,.25);font-size:1rem;margin-right:8px;cursor:grab;vertical-align:middle;" title="Drag to reorder">⠿</span>
+        ${p.emoji} <strong style="color:white;">${p.name}</strong><br>
+        <span style="color:rgba(255,255,255,.3);font-size:.75rem;">${p.brand}</span>
+      </td>
+      <td>${p.cat}</td>
+      <td style="color:#FDE8EE;font-weight:600;">Rs.${p.price.toLocaleString()}</td>
+      <td>${p.stock}</td>
+      <td><span style="color:rgba(255,255,255,.4);font-size:.8rem;">${p.images&&p.images.length?p.images.length+' img(s)':'emoji only'}</span></td>
+      <td><span class="s-pill ${p.stock>20?'pill-active':p.stock>0?'pill-low':'pill-out'}">${p.stock>20?'In Stock':p.stock>0?'Low':'Out'}</span></td>
+      <td><div class="tbl-actions">
+        <button class="btn-edit" onclick="editProduct(${p.id})">✏️ Edit</button>
+        <button class="btn-danger" onclick="deleteProduct(${p.id})">🗑️</button>
+        <button class="btn-edit" style="background:rgba(232,50,90,.15);color:#FDE8EE;" onclick="addToCart(${p.id})">🛒 Cart</button>
+      </div></td>
+    </tr>`).join('');
+
+  /* ── Drag-drop logic on table rows ── */
+  let dragRow=null, dragFromIdx=null;
+  tbody.querySelectorAll('tr').forEach(row=>{
+    row.ondragstart=e=>{
+      dragRow=row;
+      dragFromIdx=parseInt(row.dataset.idx);
+      row.style.opacity='.4';
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain',row.dataset.pid);
+    };
+    row.ondragend=()=>{
+      if(dragRow) dragRow.style.opacity='1';
+      tbody.querySelectorAll('tr').forEach(r=>{
+        r.style.background='';
+        r.style.borderTop='';
+      });
+      dragRow=null;
+    };
+    row.ondragover=e=>{
+      e.preventDefault();
+      e.dataTransfer.dropEffect='move';
+      tbody.querySelectorAll('tr').forEach(r=>r.style.borderTop='');
+      if(row!==dragRow) row.style.borderTop='2px solid var(--rose)';
+    };
+    row.ondragleave=e=>{
+      row.style.borderTop='';
+    };
+    row.ondrop=e=>{
+      e.preventDefault();
+      row.style.borderTop='';
+      if(!dragRow||dragRow===row)return;
+      const toIdx=parseInt(row.dataset.idx);
+      if(dragFromIdx===toIdx)return;
+      const [moved]=SD.products.splice(dragFromIdx,1);
+      SD.products.splice(toIdx,0,moved);
+      renderProductsTable();
+      renderProducts(activeFilter==='All'?SD.products:SD.products.filter(p=>p.cat===activeFilter));
+      autoSave();showToast('🔄 Product moved to position '+(toIdx+1)+'!');
+    };
+  });
+}
+function editProduct(id){
+  const p=SD.products.find(x=>x.id===id);
+  aPage(document.getElementById('addProductSideItem'),'addProduct');
+  document.getElementById('pName').value=p.name;
+  document.getElementById('pBrand').value=p.brand;
+  document.getElementById('pPrice').value=p.price;
+  document.getElementById('pOldPrice').value=p.oldPrice||'';
+  document.getElementById('pStock').value=p.stock;
+  document.getElementById('pDesc').value=p.desc||'';
+  document.getElementById('pBadge').value=p.badge||'';
+  document.getElementById('pEmoji').value=p.emoji;
+  selectedBg=p.bg;renderBgSwatches();
+  tempImages=[...(p.images||[])];renderImgUploadGrid();
+  editingId=id;
+  document.getElementById('prodSubmitBtn').textContent='💾 Update Product';
+  document.getElementById('addProductTitle').textContent='Edit Product';
+  showToast('✏️ Editing: '+p.name);
+}
+function deleteProduct(id){
+  if(!confirm('Delete this product?'))return;
+  SD.products=SD.products.filter(x=>x.id!==id);
+  renderProductsTable();
+  renderProducts(activeFilter==='All'?SD.products:SD.products.filter(x=>x.cat===activeFilter));
+  renderCategories();updateDashboard();autoSave();showToast('🗑️ Product deleted');
+}
+
+/* ============================================================
+   CART
+============================================================ */
+function addToCart(id){
+  const p=SD.products.find(x=>x.id===id);if(!p)return;
+  const ex=cart.find(x=>x.id===id);
+  if(ex)ex.qty++;else cart.push({...p,qty:1});
+  updateCart();showToast(p.emoji+' '+p.name+' added to bag!');
+  SD.orders.unshift({id:'CART'+Date.now(),items:[{...p,qty:ex?ex.qty:1}],total:p.price,time:new Date().toLocaleString()});
+  updateDashboard();
+}
+function updateCart(){
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCountNav').textContent=count;
+  const badge=document.getElementById('cartBadge');
+  badge.textContent=count;badge.style.display=count?'flex':'none';
+  document.getElementById('cartTotalPrice').textContent='Rs.'+total.toLocaleString();
+  document.getElementById('cartFooter').style.display=cart.length?'block':'none';
+  document.getElementById('cartBody').innerHTML=cart.length?
+    cart.map(i=>{
+      const imgSrc=i.images&&i.images.length?i.images[0]:null;
+      return `<div class="cart-item">
+        <div class="cart-item-img" style="background:${i.bg||'#FDE8EE'}">
+          ${imgSrc?`<img src="${imgSrc}" alt="${i.name}">`:`<span style="font-size:2rem;">${i.emoji}</span>`}
+        </div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${i.name}</div>
+          <div class="cart-item-brand">${i.brand}</div>
+          <div class="cart-item-price">Rs.${(i.price*i.qty).toLocaleString()}</div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button>
+            <span class="qty-val">${i.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${i.id},1)">+</button>
+          </div>
+        </div>
+        <button class="cart-remove" onclick="removeFromCart(${i.id})">✕</button>
+      </div>`;}).join(''):
+    `<div class="cart-empty"><div class="cart-empty-icon">🛍️</div><p>Your bag is empty</p><p style="font-size:.8rem;color:var(--text3);margin-top:8px;">Add some beautiful products!</p></div>`;
+}
+function changeQty(id,d){
+  const item=cart.find(x=>x.id===id);if(!item)return;
+  item.qty+=d;if(item.qty<=0)cart=cart.filter(x=>x.id!==id);
+  updateCart();
+}
+function removeFromCart(id){cart=cart.filter(x=>x.id!==id);updateCart();showToast('Removed from bag');}
+function toggleCart(){
+  document.getElementById('cartDrawer').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+
+/* ============================================================
+   ORDERS
+============================================================ */
+function renderOrders(){
+  const el=document.getElementById('ordersContent');
+  document.getElementById('orderCount').textContent=SD.orders.length+' items';
+  if(!SD.orders.length){el.innerHTML='<p style="color:rgba(255,255,255,.3);padding:2rem;text-align:center;">No orders yet. Add products to cart from the store!</p>';return;}
+  el.innerHTML=SD.orders.map(o=>`
+    <div style="background:rgba(255,255,255,.04);border-radius:12px;padding:1rem;display:flex;gap:14px;align-items:center;margin-bottom:.75rem;border:1px solid var(--admin-border);">
+      <div style="flex:1">
+        <div style="color:white;font-weight:600;font-size:.875rem;">${o.id}</div>
+        <div style="color:rgba(255,255,255,.35);font-size:.75rem;">${o.time} · ${o.items?o.items.length:1} item(s)</div>
+        <div style="color:#FDE8EE;font-weight:700;margin-top:4px;">Rs.${o.total.toLocaleString()}</div>
+      </div>
+      <span class="s-pill pill-active">Pending</span>
+    </div>`).join('');
+}
+
+/* ============================================================
+   DASHBOARD
+============================================================ */
+function updateDashboard(){
+  const rev=SD.products.reduce((s,p)=>s+p.price*3,0);
+  document.getElementById('dashRev').textContent='Rs.'+rev.toLocaleString();
+  document.getElementById('dashProds').textContent=SD.products.length;
+  document.getElementById('dashOrds').textContent=SD.orders.length;
+  document.getElementById('dashCart').textContent=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('dashSummary').innerHTML=[
+    '🛒 Cart items: '+cart.reduce((s,i)=>s+i.qty,0),
+    '📦 Total orders: '+SD.orders.length,
+    '🛍️ Products live: '+SD.products.length,
+    '🎨 Theme color: '+SD.themeColor,
+    '🖼️ Hero images: '+(SD.heroSlider.images.length||'No images (gradient only)'),
+    '⏱️ Slider speed: '+SD.heroSlider.speed+'s | Auto: '+(SD.heroSlider.autoPlay?'ON':'OFF'),
+    '🔤 Display font: '+SD.displayFont.name,
+    '💬 WhatsApp: '+(SD.wa.number?'+'+SD.wa.number:'Not configured'),
+    '🔤 Brand: '+SD.brandName1+SD.brandName2,
+  ].map(a=>`<div style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);">${a}</div>`).join('');
+}
+
+/* ============================================================
+   ADMIN NAV
+============================================================ */
+function aPage(btn,pageId){
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
+  const page=document.getElementById('page-'+pageId);
+  if(page)page.classList.add('active');
+  const T={dashboard:'Dashboard',products:'Products',addProduct:editingId?'Edit Product':'Add Product',categories:'Categories',orders:'Orders',branding:'Branding',theme:'Theme & Fonts',hero:'Hero Section',footer:'Footer Editor',whatsapp:'WhatsApp Settings',settings:'Settings'};
+  const S={dashboard:'Overview of your store',products:'Manage product catalog',addProduct:'Add or edit a product',categories:'Manage store categories',orders:'Cart & order activity',branding:'Logo and brand name',theme:'Colors, fonts & typography',hero:'Edit homepage hero content',footer:'Footer links & text',whatsapp:'Configure WhatsApp ordering',settings:'Store toggles'};
+  document.getElementById('adminPageTitle').textContent=T[pageId]||pageId;
+  document.getElementById('adminPageSub').textContent=S[pageId]||'';
+  if(pageId==='products')renderProductsTable();
+  if(pageId==='orders')renderOrders();
+  if(pageId==='categories')renderCategories();
+  if(pageId==='addProduct'&&!editingId){clearProductForm();renderCatSelector();}
+  if(pageId==='hero'){
+    renderHeroImgAdminGrid();
+    const spr=document.getElementById('sliderSpeedRange');
+    const lbl=document.getElementById('sliderSpeedLabel');
+    if(spr){spr.value=SD.heroSlider.speed;}
+    if(lbl){lbl.textContent=SD.heroSlider.speed+' second'+(SD.heroSlider.speed==1?'':'s');}
+    const apt=document.getElementById('autoPlayToggle');
+    if(apt) apt.checked=SD.heroSlider.autoPlay;
+    const tr=document.getElementById('sliderTransition');
+    if(tr) tr.value=SD.heroSlider.transition||'fade';
+    const od=document.getElementById('overlayDarkness');
+    if(od) od.value=String(SD.heroSlider.overlay||0.45);
+  }
+  if(pageId==='whatsapp'){
+    document.getElementById('waNumber').value=SD.wa.number;
+    document.getElementById('waOwnerName').value=SD.wa.ownerName;
+    document.getElementById('waMsgTemplate').value=SD.wa.template;
+    renderWAPreview();
+    document.getElementById('waNumber').oninput=renderWAPreview;
+    document.getElementById('waMsgTemplate').oninput=renderWAPreview;
+    document.getElementById('waOwnerName').oninput=renderWAPreview;
+  }
+}
+function openAdmin(){document.getElementById('storeApp').style.display='none';document.getElementById('adminApp').style.display='block';updateDashboard();}
+function closeAdmin(){document.getElementById('adminApp').style.display='none';document.getElementById('storeApp').style.display='block';}
+
+function manualSave(){
+  saveData();
+  flashSaved();
+  showToast('💾 All data saved!');
+}
+
+function showStorageInfo(){
+  const box=document.getElementById('storageInfoBox');
+  try{
+    const raw=localStorage.getItem(STORE_KEY)||'';
+    const kb=(raw.length/1024).toFixed(1);
+    const parsed=JSON.parse(raw||'{}');
+    const heroImgs=(parsed.heroSlider&&parsed.heroSlider.images)||[];
+    const prodImgs=SD.products.reduce((s,p)=>s+(p.images?p.images.length:0),0);
+    box.style.display='block';
+    box.innerHTML=`
+      📦 Total saved size: <strong style="color:white;">${kb} KB</strong><br>
+      🛍️ Products saved: <strong style="color:white;">${SD.products.length}</strong><br>
+      🖼️ Product images: <strong style="color:white;">${prodImgs}</strong><br>
+      🎞️ Hero images: <strong style="color:white;">${heroImgs.length}</strong><br>
+      📂 Browser storage limit: ~5 MB (${((raw.length/1024/5120)*100).toFixed(1)}% used)<br>
+      <span style="color:rgba(255,255,255,.3);font-size:.72rem;">Note: Agar storage bhar jaye to images save nahi hongi — text data hamesha save hoga.</span>
+    `;
+  } catch(e){
+    box.style.display='block';
+    box.innerHTML='Storage info load nahi ho saki.';
+  }
+}
+
+function resetAllData(){
+  if(!confirm('⚠️ Sab data reset ho jayega!\n\nProducts, images, settings, branding — sab kuch default pe aa jayega.\n\nKya aap sure hain?'))return;
+  try{localStorage.removeItem(STORE_KEY);}catch(e){}
+  showToast('🔄 Reset ho raha hai...');
+  setTimeout(()=>location.reload(),800);
+}
+
+/* ============================================================
+   TOAST
+============================================================ */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+init();
+</script>
+</body>
+</html>
